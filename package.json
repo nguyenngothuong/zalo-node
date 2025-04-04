@@ -1,0 +1,78 @@
+{
+	"name": "n8n-nodes-zalo-tools",
+	"version": "0.3.0",
+	"description": "Các node hỗ trợ Zalo cho n8n",
+	"keywords": [
+		"n8n-community-node-package",
+		"zalo-nodes",
+		"zalo",
+		"tools",
+		"n8n"
+	],
+	"license": "MIT",
+	"homepage": "https://n8n.io/",
+	"author": {
+		"name": "dinhtrung",
+		"email": "trungduong13082000@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dinhtrung1308/zalo-node.git"
+	},
+	"engines": {
+		"node": ">=18.10",
+		"pnpm": ">=9.1"
+	},
+	"packageManager": "pnpm@9.1.4",
+	"main": "index.js",
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"build": "tsc && gulp build:icons",
+		"dev": "tsc --watch",
+		"format": "prettier nodes --write",
+		"lint": "eslint nodes package.json",
+		"lintfix": "eslint nodes package.json --fix",
+		"prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes package.json",
+		"watch": "concurrently \"pnpm run watch\" \"pnpm run start:n8n\"",
+		"start:n8n": "nodemon --watch dist --exec \"npx n8n start\""
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"nodes": [
+			"dist/nodes/ZaloAcceptFriendRequest/ZaloAcceptFriendRequest.node.js",
+			"dist/nodes/ZaloAddGroupDeputy/ZaloAddGroupDeputy.node.js",
+			"dist/nodes/ZaloAddReaction/ZaloAddReaction.node.js",
+			"dist/nodes/ZaloFindUserInformationByPhoneNumber/ZaloFindUserInformationByPhoneNumber.node.js",
+			"dist/nodes/ZaloGetGroupInfo/ZaloGetGroupInfo.node.js",
+			"dist/nodes/ZaloLoginByQR/ZaloLoginByQR.node.js",
+			"dist/nodes/ZaloSendMessage/ZaloSendMessage.node.js"
+		]
+	},
+	"devDependencies": {
+		"@typescript-eslint/parser": "^7.15.0",
+		"concurrently": "^9.1.2",
+		"eslint": "^8.56.0",
+		"eslint-plugin-n8n-nodes-base": "^1.16.1",
+		"gulp": "^4.0.2",
+		"javascript-obfuscator": "^4.1.1",
+		"nodemon": "^3.1.9",
+		"prettier": "^3.3.2",
+		"typescript": "^5.5.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	},
+	"dependencies": {
+		"gulp-obfuscator": "^0.0.0",
+		"gulp-terser": "^2.1.0",
+		"gulp-typescript": "6.0.0-alpha.1",
+		"n8n": "^1.84.1",
+		"node-notifier": "^10.0.1",
+		"open": "^10.1.0",
+		"pnpm": "^10.6.5",
+		"zca-js": "2.0.0-beta.14"
+	}
+}

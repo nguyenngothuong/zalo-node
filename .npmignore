@@ -1,0 +1,7 @@
+.DS_Store
+*.tsbuildinfo
+*.log
+.vscode
+.eslintrc*
+prettier*
+gulpfile.js
