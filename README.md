@@ -31,13 +31,90 @@ npm install n8n-nodes-zalo-tools
 
 This package contains the following nodes (see the `nodes` directory for details):
 
-*   ZaloLoginByQR
-*   ZaloSendMessage
-*   ZaloAddGroupDeputy
-*   ZaloAcceptFriendRequest
-*   ZaloAddReaction
-*   ZaloFindUserInformationByPhoneNumber
-*   ZaloGetGroupInfo
+ ## Các Node Hỗ Trợ
+
+### ZaloAcceptFriendRequest
+- Chấp nhận yêu cầu kết bạn từ người dùng Zalo khác
+- Yêu cầu: ID người gửi yêu cầu kết bạn
+
+### ZaloAddGroupDeputy
+- Thêm phó quản trị viên cho nhóm Zalo
+- Yêu cầu: ID nhóm và ID người dùng
+
+### ZaloAddUserToGroup
+- Thêm người dùng vào nhóm Zalo
+- Yêu cầu: ID nhóm và ID người dùng
+
+### ZaloBlockUser
+- Chặn người dùng trên Zalo
+- Yêu cầu: ID người dùng cần chặn
+
+### ZaloChangeGroupAvatar
+- Thay đổi ảnh đại diện nhóm Zalo
+- Yêu cầu: ID nhóm và URL ảnh mới
+
+### ZaloChangeGroupName
+- Thay đổi tên nhóm Zalo
+- Yêu cầu: ID nhóm và tên mới
+
+### ZaloCreateGroup
+- Tạo nhóm mới trên Zalo
+- Yêu cầu: Tên nhóm và danh sách thành viên
+
+### ZaloFindUserInformationByPhoneNumber
+- Tìm thông tin người dùng qua số điện thoại
+- Yêu cầu: Số điện thoại cần tìm
+
+### ZaloGetAllFriends
+- Lấy danh sách tất cả bạn bè
+- Trả về: Danh sách bạn bè với thông tin chi tiết
+
+### ZaloGetAllGroups
+- Lấy danh sách tất cả nhóm
+- Trả về: Danh sách nhóm với thông tin chi tiết
+
+### ZaloGetGroupInfo
+- Lấy thông tin chi tiết của nhóm
+- Yêu cầu: ID nhóm
+- Trả về: Thông tin nhóm, thành viên, quản trị viên
+
+### ZaloGetGroupMembers
+- Lấy danh sách thành viên trong nhóm
+- Yêu cầu: ID nhóm
+- Trả về: Danh sách thành viên với thông tin chi tiết
+
+### ZaloGetStickers
+- Lấy danh sách sticker có sẵn
+- Trả về: Danh sách sticker với ID và thông tin
+
+### ZaloGetUserInfo
+- Lấy thông tin chi tiết của người dùng
+- Yêu cầu: ID người dùng
+- Trả về: Thông tin cá nhân, trạng thái, v.v.
+
+### ZaloLoginByQR
+- Đăng nhập Zalo bằng mã QR
+- Tạo mã QR và chờ quét để đăng nhập
+
+### ZaloMessageTrigger
+- Kích hoạt workflow khi nhận tin nhắn Zalo
+- Hỗ trợ các loại tin nhắn: text, image, voice, sticker, file
+
+### ZaloRemoveUserFromGroup
+- Xóa người dùng khỏi nhóm
+- Yêu cầu: ID nhóm và ID người dùng
+
+### ZaloSendMessage
+- Gửi tin nhắn trên Zalo
+- Hỗ trợ: tin nhắn văn bản, hình ảnh, file
+
+### ZaloSendSticker
+- Gửi sticker trên Zalo
+- Yêu cầu: ID sticker và ID người nhận
+
+### ZaloUnblockUser
+- Bỏ chặn người dùng trên Zalo
+- Yêu cầu: ID người dùng cần bỏ chặn
 
 ## Warning and Thanks
 
