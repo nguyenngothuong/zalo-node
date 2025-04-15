@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloGetStickers implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Lấy Danh Sách Sticker',
+		name: 'zaloGetStickers',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Lấy danh sách tất cả sticker có sẵn trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Lấy Danh Sách Sticker',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -32,12 +32,12 @@ export class ZaloGetGroupInfo implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'ID Nhóm',
-				name: 'groupId',
+				displayName: 'Tên Sticker',
+				name: 'name',
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'Số lượng sticker tối đa cần lấy',
 			},
 		],
 	};
@@ -67,14 +67,13 @@ export class ZaloGetGroupInfo implements INodeType {
 		}
 
 		try {
-			const groupId = this.getNodeParameter('groupId', 0) as string;
-
-			const result = await api.getGroupInfo(groupId);
+			const name = this.getNodeParameter('name', 0) as string;
+			const result = await api.getStickers(name);
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Lấy danh sách sticker thành công',
 					result,
 				},
 			});
@@ -92,4 +91,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

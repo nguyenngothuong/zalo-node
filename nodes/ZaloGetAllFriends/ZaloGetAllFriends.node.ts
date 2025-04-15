@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloGetAllFriends implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Lấy Tất Cả Bạn Bè',
+		name: 'zaloGetAllFriends',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Lấy danh sách tất cả bạn bè trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Lấy Tất Cả Bạn Bè',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -32,12 +32,12 @@ export class ZaloGetGroupInfo implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'ID Nhóm',
-				name: 'groupId',
-				type: 'string',
-				default: '',
+				displayName: 'Giới Hạn',
+				name: 'limit',
+				type: 'number',
+				default: 50,
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'Số lượng bạn bè tối đa cần lấy',
 			},
 		],
 	};
@@ -67,14 +67,15 @@ export class ZaloGetGroupInfo implements INodeType {
 		}
 
 		try {
-			const groupId = this.getNodeParameter('groupId', 0) as string;
-
-			const result = await api.getGroupInfo(groupId);
+			const limit = this.getNodeParameter('limit', 0) as number;
+			
+				
+			const result = !!limit ? await api.getAllFriends(limit) : await api.getAllFriends();
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Lấy danh sách bạn bè thành công',
 					result,
 				},
 			});
@@ -92,4 +93,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloSendSticker implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Gửi Sticker',
+		name: 'zaloSendSticker',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Gửi sticker đến người dùng hoặc nhóm trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Gửi Sticker',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -32,12 +32,20 @@ export class ZaloGetGroupInfo implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'ID Nhóm',
-				name: 'groupId',
+				displayName: 'ID Người Nhận',
+				name: 'receiverId',
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'ID của người dùng hoặc nhóm cần gửi sticker',
+			},
+			{
+				displayName: 'ID Sticker',
+				name: 'stickerId',
+				type: 'string',
+				default: '',
+				required: true,
+				description: 'ID của sticker cần gửi',
 			},
 		],
 	};
@@ -67,14 +75,23 @@ export class ZaloGetGroupInfo implements INodeType {
 		}
 
 		try {
-			const groupId = this.getNodeParameter('groupId', 0) as string;
+			const recipientId = this.getNodeParameter('recipientId', 0) as string;
+			const stickerId = this.getNodeParameter('stickerId', 0) as number;
 
-			const result = await api.getGroupInfo(groupId);
+			if (!recipientId || !stickerId) {
+				throw new NodeOperationError(this.getNode(), 'Recipient ID and Sticker ID are required');
+			}
+
+			const stickers = await api.getStickersDetail(stickerId);
+			if (!stickers) {
+				throw new NodeOperationError(this.getNode(), 'Sticker not found');
+			}
+			const result = await api.sendSticker(stickers[0], recipientId);
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Gửi sticker thành công',
 					result,
 				},
 			});
@@ -92,4 +109,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

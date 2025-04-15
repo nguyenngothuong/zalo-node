@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloGetUserInfo implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Lấy Thông Tin Người Dùng',
+		name: 'zaloGetUserInfo',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Lấy thông tin chi tiết của người dùng trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Lấy Thông Tin Người Dùng',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -32,12 +32,12 @@ export class ZaloGetGroupInfo implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'ID Nhóm',
-				name: 'groupId',
+				displayName: 'ID Người Dùng',
+				name: 'userId',
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'ID của người dùng cần lấy thông tin',
 			},
 		],
 	};
@@ -67,14 +67,18 @@ export class ZaloGetGroupInfo implements INodeType {
 		}
 
 		try {
-			const groupId = this.getNodeParameter('groupId', 0) as string;
+			const userId = this.getNodeParameter('userId', 0) as string;
 
-			const result = await api.getGroupInfo(groupId);
+			if (!userId) {
+				throw new NodeOperationError(this.getNode(), 'Vui lòng nhập ID người dùng');
+			}
+
+			const result = await api.getUserInfo(userId);
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Lấy thông tin người dùng thành công',
 					result,
 				},
 			});
@@ -92,4 +96,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloCreateGroup implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Tạo Nhóm',
+		name: 'zaloCreateGroup',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Tạo nhóm mới trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Tạo Nhóm',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -32,12 +32,20 @@ export class ZaloGetGroupInfo implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'ID Nhóm',
-				name: 'groupId',
+				displayName: 'Tên Nhóm',
+				name: 'groupName',
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'Tên của nhóm mới',
+			},
+			{
+				displayName: 'Danh Sách ID Thành Viên',
+				name: 'userIds',
+				type: 'string',
+				default: '',
+				required: true,
+				description: 'Danh sách ID thành viên, phân cách bằng dấu phẩy',
 			},
 		],
 	};
@@ -67,14 +75,21 @@ export class ZaloGetGroupInfo implements INodeType {
 		}
 
 		try {
-			const groupId = this.getNodeParameter('groupId', 0) as string;
+			const groupName = this.getNodeParameter('groupName', 0) as string;
+			const userIdsStr = this.getNodeParameter('userIds', 0) as string;
 
-			const result = await api.getGroupInfo(groupId);
+			if (!groupName || !userIdsStr) {
+				throw new NodeOperationError(this.getNode(), 'Vui lòng nhập tên nhóm và danh sách ID thành viên');
+			}
+
+			const userIds = userIdsStr.split(',').map(id => id.trim());
+
+			const result = await api.createGroup({ name: groupName, members: userIds });
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Tạo nhóm thành công',
 					result,
 				},
 			});
@@ -92,4 +107,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

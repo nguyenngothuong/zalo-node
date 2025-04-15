@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloChangeGroupAvatar implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Thay Đổi Ảnh Đại Diện Nhóm',
+		name: 'zaloChangeGroupAvatar',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Thay đổi ảnh đại diện của nhóm trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Thay Đổi Ảnh Đại Diện Nhóm',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -37,7 +37,15 @@ export class ZaloGetGroupInfo implements INodeType {
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'ID của nhóm cần thay đổi ảnh đại diện',
+			},
+			{
+				displayName: 'URL Ảnh',
+				name: 'imageUrl',
+				type: 'string',
+				default: '',
+				required: true,
+				description: 'URL của ảnh đại diện mới',
 			},
 		],
 	};
@@ -68,13 +76,18 @@ export class ZaloGetGroupInfo implements INodeType {
 
 		try {
 			const groupId = this.getNodeParameter('groupId', 0) as string;
+			const imageUrl = this.getNodeParameter('imageUrl', 0) as string;
 
-			const result = await api.getGroupInfo(groupId);
+			if (!groupId || !imageUrl) {
+				throw new NodeOperationError(this.getNode(), 'ID nhóm và URL ảnh là bắt buộc');
+			}
+
+			const result = await api.changeGroupAvatar(groupId, imageUrl);
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
+					message: 'Thay đổi ảnh đại diện nhóm thành công',
 					result,
 				},
 			});
@@ -92,4 +105,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

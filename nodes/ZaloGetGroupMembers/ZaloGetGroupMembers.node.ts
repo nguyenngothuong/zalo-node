@@ -10,15 +10,15 @@ import { API, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
-export class ZaloGetGroupInfo implements INodeType {
+export class ZaloGetGroupMembers implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Lấy Thông Tin Nhóm',
-		name: 'zaloGetGroupInfo',
+		displayName: 'Zalo Lấy Danh Sách Thành Viên Nhóm',
+		name: 'zaloGetGroupMembers',
 		group: ['Zalo'],
 		version: 1,
-		description: 'Lấy thông tin chi tiết của một nhóm trên Zalo',
+		description: 'Lấy danh sách thành viên của một nhóm trên Zalo',
 		defaults: {
-			name: 'Zalo Lấy Thông Tin Nhóm',
+			name: 'Zalo Lấy Danh Sách Thành Viên Nhóm',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
@@ -37,7 +37,15 @@ export class ZaloGetGroupInfo implements INodeType {
 				type: 'string',
 				default: '',
 				required: true,
-				description: 'ID của nhóm cần lấy thông tin',
+				description: 'ID của nhóm cần lấy danh sách thành viên',
+			},
+			{
+				displayName: 'Giới Hạn',
+				name: 'limit',
+				type: 'number',
+				default: 50,
+				required: true,
+				description: 'Số lượng thành viên tối đa cần lấy',
 			},
 		],
 	};
@@ -68,14 +76,17 @@ export class ZaloGetGroupInfo implements INodeType {
 
 		try {
 			const groupId = this.getNodeParameter('groupId', 0) as string;
+			const limit = this.getNodeParameter('limit', 0) as number;
 
-			const result = await api.getGroupInfo(groupId);
+			const groupInfo = await api.getGroupInfo(groupId);
+			const response = groupInfo as any;
+			const members = response.currentMems?.slice(0, limit) || [];
 
 			returnData.push({
 				json: {
 					success: true,
-					message: 'Lấy thông tin nhóm thành công',
-					result,
+					message: 'Lấy danh sách thành viên nhóm thành công',
+					result: members,
 				},
 			});
 
@@ -92,4 +103,4 @@ export class ZaloGetGroupInfo implements INodeType {
 			throw error;
 		}
 	}
-}
+} 

@@ -484,28 +484,16 @@ export class ZaloLoginByQR implements INodeType {
 													const apiUrl = `http://127.0.0.1:${port}`;
 													const fullApiUrl = `${apiUrl}/api/v1/credentials`;
 													const n8nApi =  await this.getCredentials('n8nApi');
-
-													console.error(n8nApi.apiKey, 'abc')
+													const n8nApiUrl = n8nApi.url as string;
+													const n8nApiKey = n8nApi.apiKey as string;
 													console.error(`Trying to create credential via n8n API at ${fullApiUrl}`);
 
 													try {
-														// Make HTTP request to create credential
-														// const response = await this.helpers.request({
-														// 	method: 'POST',
-														// 	url: fullApiUrl,
-														// 	headers: {
-														// 		'Content-Type': 'application/json',
-														// 		'X-N8N-API-KEY': n8nApi.apiKey
-
-														// 	},
-														// 	body: credentialApiData,
-														// 	json: true,
-														// });
-														await axios.post(fullApiUrl, credentialApiData,
+														await axios.post(n8nApiUrl, credentialApiData,
 															{
 														   headers: {
 															 'Content-Type': 'application/json',
-															 'X-N8N-API-KEY': n8nApi.apiKey as string
+															 'X-N8N-API-KEY': n8nApiKey as string
 														   },
 														 })
 														 
