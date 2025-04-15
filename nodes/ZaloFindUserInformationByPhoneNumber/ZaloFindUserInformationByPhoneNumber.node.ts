@@ -23,6 +23,13 @@ export class ZaloFindUserInformationByPhoneNumber implements INodeType {
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
+        credentials: [
+			{
+				name: 'zaloApi',
+				required: true,
+				displayName: 'Zalo Credential to connect with',
+			},
+        ],
 		properties: [
 			{
 				displayName: 'Phone Number',
@@ -39,10 +46,15 @@ export class ZaloFindUserInformationByPhoneNumber implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const returnData: INodeExecutionData[] = [];
         const inputs = this.getInputData();
-        console.log('Inputs', inputs);
-        const cookie = inputs.find((x) => x.json.cookie)?.json.cookie as any;
-        const imei = inputs.find((x) => x.json.imei)?.json.imei as string;
-        const userAgent = inputs.find((x) => x.json.userAgent)?.json.userAgent as string;
+        const zaloCred = await this.getCredentials("zaloApi");
+
+        const cookieFromCred = JSON.parse(zaloCred.cookie as string);
+        const imeiFromCred = zaloCred.imei as string;
+        const userAgentFromCred = zaloCred.userAgent as string;
+
+        const cookie = cookieFromCred ?? inputs.find((x) => x.json.cookie)?.json.cookie as any;
+        const imei = imeiFromCred ?? inputs.find((x) => x.json.imei)?.json.imei as string;
+        const userAgent = userAgentFromCred ?? inputs.find((x) => x.json.userAgent)?.json.userAgent as string;
         this.logger.info(`Message sent ${JSON.stringify({ cookie, imei, userAgent })}`);
 
         const zalo = new Zalo();

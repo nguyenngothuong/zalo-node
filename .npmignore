@@ -5,3 +5,4 @@
 .eslintrc*
 prettier*
 gulpfile.js
+output

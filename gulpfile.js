@@ -9,8 +9,8 @@ function copyIcons() {
 
 	src(nodeSource).pipe(dest(nodeDestination));
 
-	// const credSource = path.resolve('credentials', '**', '*.{png,svg}');
-	// const credDestination = path.resolve('dist', 'credentials');
+	const credSource = path.resolve('credentials', '**', '*.{png,svg,ts}');
+	const credDestination = path.resolve('dist', 'credentials');
 
-	return src(nodeSource).pipe(dest(nodeDestination));
+	return src(credSource).pipe(dest(credDestination));
 }

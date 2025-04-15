@@ -41,6 +41,10 @@
 	],
 	"n8n": {
 		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/N8nApi.credentials.js",
+			"dist/credentials/ZaloApi..credentials.js"
+		  ],
 		"nodes": [
 			"dist/nodes/ZaloAcceptFriendRequest/ZaloAcceptFriendRequest.node.js",
 			"dist/nodes/ZaloAddGroupDeputy/ZaloAddGroupDeputy.node.js",
@@ -66,6 +70,7 @@
 		"n8n-workflow": "*"
 	},
 	"dependencies": {
+		"axios": "^1.8.4",
 		"gulp-obfuscator": "^0.0.0",
 		"gulp-terser": "^2.1.0",
 		"gulp-typescript": "6.0.0-alpha.1",
