@@ -43,16 +43,29 @@
 		"n8nNodesApiVersion": 1,
 		"credentials": [
 			"dist/credentials/N8nApi.credentials.js",
-			"dist/credentials/ZaloApi..credentials.js"
+			"dist/credentials/ZaloApi.credentials.js"
 		  ],
 		"nodes": [
 			"dist/nodes/ZaloAcceptFriendRequest/ZaloAcceptFriendRequest.node.js",
 			"dist/nodes/ZaloAddGroupDeputy/ZaloAddGroupDeputy.node.js",
-			"dist/nodes/ZaloAddReaction/ZaloAddReaction.node.js",
+			"dist/nodes/ZaloAddUserToGroup/ZaloAddUserToGroup.node.js",
+			"dist/nodes/ZaloBlockUser/ZaloBlockUser.node.js",
+			"dist/nodes/ZaloChangeGroupAvatar/ZaloChangeGroupAvatar.node.js",
+			"dist/nodes/ZaloChangeGroupName/ZaloChangeGroupName.node.js",
+			"dist/nodes/ZaloCreateGroup/ZaloCreateGroup.node.js",
 			"dist/nodes/ZaloFindUserInformationByPhoneNumber/ZaloFindUserInformationByPhoneNumber.node.js",
+			"dist/nodes/ZaloGetAllFriends/ZaloGetAllFriends.node.js",
+			"dist/nodes/ZaloGetAllGroups/ZaloGetAllGroups.node.js",
 			"dist/nodes/ZaloGetGroupInfo/ZaloGetGroupInfo.node.js",
+			"dist/nodes/ZaloGetGroupMembers/ZaloGetGroupMembers.node.js",
+			"dist/nodes/ZaloGetStickers/ZaloGetStickers.node.js",
+			"dist/nodes/ZaloGetUserInfo/ZaloGetUserInfo.node.js",
 			"dist/nodes/ZaloLoginByQR/ZaloLoginByQR.node.js",
-			"dist/nodes/ZaloSendMessage/ZaloSendMessage.node.js"
+			"dist/nodes/ZaloMessageTrigger/ZaloMessageTrigger.node.js",
+			"dist/nodes/ZaloRemoveUserFromGroup/ZaloRemoveUserFromGroup.node.js",
+			"dist/nodes/ZaloSendMessage/ZaloSendMessage.node.js",
+			"dist/nodes/ZaloSendSticker/ZaloSendSticker.node.js",
+			"dist/nodes/ZaloUnblockUser/ZaloUnblockUser.node.js"
 		]
 	},
 	"devDependencies": {
