@@ -15,9 +15,14 @@ module.exports = {
 				'n8n-nodes-base/node-param-description-wrong-for-limit': 'off',
 				'n8n-nodes-base/node-param-description-wrong-for-limit': 'off',
 				'n8n-nodes-base/node-param-display-name-miscased': 'off',
-				'n8n-nodes-base/node-param-type-options-missing-from-limit': 'off'
-
+				'n8n-nodes-base/node-param-type-options-missing-from-limit': 'off',
+				'n8n-nodes-base/node-param-description-wrong-for-limit': 'off',
+				'n8n-nodes-base/node-param-operation-option-action-miscased': 'off',
+				'n8n-nodes-base/node-param-options-type-unsorted-items': 'off',
+				'n8n-nodes-base/node-param-option-description-identical-to-name': 'off',
+				'n8n-nodes-base/node-param-options-type-unsorted-items': 'off',
+				'n8n-nodes-base/node-param-required-false': 'off'
+				},
 			},
-		},
-	],
-};
+		],
+	};

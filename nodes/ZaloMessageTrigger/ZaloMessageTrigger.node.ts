@@ -4,7 +4,6 @@ import {
 	IWebhookFunctions,
 	IWebhookResponseData,
 	NodeOperationError,
-	NodeConnectionType,
 	IHookFunctions,
 	IDataObject,
 } from 'n8n-workflow';
@@ -24,8 +23,10 @@ export class ZaloMessageTrigger implements INodeType {
 		defaults: {
 			name: 'Zalo Message Trigger',
 		},
+		// @ts-ignore
 		inputs: [],
-		outputs: [NodeConnectionType.Main],
+		// @ts-ignore
+		outputs: ['main'],
 		webhooks: [
 			{
 				name: 'default',

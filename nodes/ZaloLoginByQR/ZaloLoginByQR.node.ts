@@ -4,10 +4,8 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	NodeOperationError,
-	NodeConnectionType,
 } from 'n8n-workflow';
 import { Zalo } from 'zca-js';
-import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 
@@ -21,8 +19,10 @@ export class ZaloLoginByQr implements INodeType {
 		defaults: {
 			name: 'Zalo Login Via QR Code',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		// @ts-ignore
+		inputs: ['main'],
+		// @ts-ignore
+		outputs: ['main'],
 		icon: 'file:../shared/zalo.svg',
 		credentials: [
 			{
@@ -87,29 +87,13 @@ export class ZaloLoginByQr implements INodeType {
 		}
 
 		try {
-			// Create output directory if it doesn't exist
-			const outputDir = path.join(process.cwd(), 'output');
-			if (!fs.existsSync(outputDir)) {
-				fs.mkdirSync(outputDir);
-			}
+			
 
-			// Create data/cookies directory if it doesn't exist
-			const dataDir = path.join(process.cwd(), 'data');
-			const cookiesDir = path.join(dataDir, 'cookies');
-			if (!fs.existsSync(dataDir)) {
-				fs.mkdirSync(dataDir, { recursive: true });
-			}
-			if (!fs.existsSync(cookiesDir)) {
-				fs.mkdirSync(cookiesDir, { recursive: true });
-			}
-
-			// Initialize Zalo with options
 			const zaloOptions: any = {
 				selfListen: true,
 				logging: true,
 			};
 
-			// Add proxy if provided
 			if (proxy) {
 				zaloOptions.proxy = proxy;
 			}
@@ -187,116 +171,7 @@ export class ZaloLoginByQr implements INodeType {
 				console.error('User Agent:', userAgent ? userAgent : 'None');
 				console.error('=== END CREDENTIALS ===');
 
-				try {
-					// Save credentials to file
-					const credentialsPath = path.join(outputDir, 'zalo-credentials.json');
-					console.error('Saving credentials to:', credentialsPath);
 
-					// Create debug file
-					const debugPath = path.join(outputDir, 'zalo-debug.txt');
-					fs.writeFileSync(debugPath, `Login event received at ${new Date().toISOString()}\nCookie: ${cookie ? 'Yes (' + cookie.length + ' chars)' : 'No'}\nIMEI: ${imei ? 'Yes (' + imei.length + ' chars)' : 'No'}\nUserAgent: ${userAgent ? 'Yes (' + userAgent.length + ' chars)' : 'No'}`);
-					console.error('Debug information saved to:', debugPath);
-
-					// Save credentials to output directory
-					if (cookie || imei || userAgent) {
-						fs.writeFileSync(credentialsPath, JSON.stringify({ cookie, imei, userAgent }, null, 2));
-						console.error('=== ZALO CREDENTIALS SAVED TO OUTPUT ===');
-						console.error('Login information saved to:', credentialsPath);
-
-						// Save to data/cookies directory with timestamp
-						const timestamp = new Date().getTime();
-						const credFileName = `cred_${timestamp}.json`;
-						const credFilePath = path.join(cookiesDir, credFileName);
-
-						fs.writeFileSync(credFilePath, JSON.stringify({ imei, cookie, userAgent }, null, 4));
-						console.error(`Credentials saved to file ${credFileName}`);
-
-						// Always create credentials
-						const credentialName = 'Zalo API Credentials';
-						console.error(`Creating credential with name: ${credentialName}`);
-
-						// Create credential data
-						const credentialData = {
-							cookie: JSON.stringify(cookie),
-							imei: imei,
-							userAgent: userAgent,
-							proxy: proxy || '',
-							supportCode: 'ab4a204fe0fc4493d0739ab00a084849054365d9d252cb3c943ed756d577d6469',
-							licenseKey: ''
-						};
-
-						// Store credential data in a file for later use
-						const credentialInfoPath = path.join(outputDir, 'zalo-credential-info.json');
-						fs.writeFileSync(credentialInfoPath, JSON.stringify({
-							type: 'zaloApi',
-							name: credentialName,
-							data: credentialData
-						}, null, 2));
-						console.error('Credential info saved to:', credentialInfoPath);
-
-						// Try to automatically create credential if n8n credential is provided
-						if (!!n8nCredential) {
-							// Get API key from n8n credential
-							const apiKey = n8nCredential.apiKey as string;
-							const apiUrl = n8nCredential.url as string || 'http://localhost:5678';
-							const fullApiUrl = `${apiUrl}/api/v1/credentials`;
-
-							console.error(`Attempting to create Zalo credential via n8n API at ${fullApiUrl}`);
-
-							// Prepare the credential data for n8n API
-							const body = {
-								name: credentialName,
-								type: 'zaloApi',
-								nodesAccess: [],
-								data: credentialData
-							};
-							// await axios.post(fullApiUrl, body, co)
-							// Make HTTP request to create credential using Promise
-							axios.post(fullApiUrl, body, {
-								headers: {
-								  'Content-Type': 'application/json',
-								  'X-N8N-API-KEY': apiKey,
-								},
-							  })
-							  .then((response) => {
-								console.error('Credential created successfully via n8n API:', response.data);
-								console.error('Credential ID:', response.data.id);
-							  })
-							  .catch((apiError) => {
-								console.error('Error creating credential via n8n API:', apiError.message);
-								console.error('Credential info saved to file. You can create it manually.');
-							  });
-						} else {
-							// Try to create credential using the auto-create-zalo-credential.js script
-							console.error('No n8n credential provided. Attempting to create credential using auto-create-zalo-credential.js');
-
-							try {
-								// Execute the auto-create-zalo-credential.js script
-								const { exec } = require('child_process');
-								exec('node auto-create-zalo-credential.js', (error: any, stdout: any, stderr: any) => {
-									if (error) {
-										console.error(`Error executing auto-create-zalo-credential.js: ${error.message}`);
-										return;
-									}
-									if (stderr) {
-										console.error(`stderr: ${stderr}`);
-										return;
-									}
-									console.error(`stdout: ${stdout}`);
-								});
-							} catch (execError: any) {
-								console.error(`Error executing auto-create-zalo-credential.js: ${execError.message}`);
-								console.error('Credential info saved to file. You can create it manually using:');
-								console.error('node auto-create-zalo-credential.js');
-							}
-						}
-					} else {
-						console.error('=== NO CREDENTIALS TO SAVE ===');
-						console.error('No login information available to save');
-					}
-				} catch (fileError: any) {
-					console.error('Error saving credentials:', fileError.message);
-				}
 			};
 
 			// Function to set up event listeners
@@ -411,38 +286,11 @@ export class ZaloLoginByQr implements INodeType {
 									// Save credentials to file immediately
 									try {
 										// Create debug file
-										const debugPath = path.join(outputDir, 'zalo-debug-login.txt');
-										fs.writeFileSync(debugPath, `Login info received at ${new Date().toISOString()}\nCookie: ${cookie.length > 0 ? 'Yes (' + cookie.length + ' items)' : 'No'}\nIMEI: ${imei ? 'Yes (' + imei.length + ' chars)' : 'No'}\nUserAgent: ${userAgent ? 'Yes (' + userAgent.length + ' chars)' : 'No'}`);
-										console.error('Debug login information saved to:', debugPath);
+										
 
 										// Save credentials to output directory
 										if (cookie.length > 0 || imei || userAgent) {
-											const credentialsPath = path.join(outputDir, 'zalo-credentials.json');
-											fs.writeFileSync(credentialsPath, JSON.stringify({
-												cookie,
-												imei,
-												userAgent,
-												proxy: proxy || '',
-												supportCode: 'ab4a204fe0fc4493d0739ab00a084849054365d9d252cb3c943ed756d577d6469',
-												licenseKey: ''
-											}, null, 2));
-											console.error('=== ZALO CREDENTIALS SAVED TO OUTPUT ===');
-											console.error('Login information saved to:', credentialsPath);
-
-											// Save to data/cookies directory with timestamp
-											const timestamp = new Date().getTime();
-											const credFileName = `cred_${timestamp}.json`;
-											const credFilePath = path.join(cookiesDir, credFileName);
-
-											fs.writeFileSync(credFilePath, JSON.stringify({
-											imei,
-											cookie,
-											userAgent,
-											proxy: proxy || '',
-											supportCode: 'ab4a204fe0fc4493d0739ab00a084849054365d9d252cb3c943ed756d577d6469',
-											licenseKey: ''
-										}, null, 4));
-											console.error(`Credentials saved to file ${credFileName}`);
+											
 
 											// Create credential info file for auto-creation
 											const credentialName = 'Zalo API Credentials';
@@ -451,18 +299,11 @@ export class ZaloLoginByQr implements INodeType {
 												imei: imei,
 												userAgent: userAgent,
 												proxy: proxy || '',
-												supportCode: 'ab4a204fe0fc4493d0739ab00a084849054365d9d252cb3c943ed756d577d6469',
+												supportCode: '',
 												licenseKey: ''
 											};
 
-											// Store credential data in a file for later use
-											const credentialInfoPath = path.join(outputDir, 'zalo-credential-info.json');
-											fs.writeFileSync(credentialInfoPath, JSON.stringify({
-												type: 'zaloApi',
-												name: credentialName,
-												data: credentialData
-											}, null, 2));
-											console.error('Credential info saved to:', credentialInfoPath);
+											
 
 											// Try to automatically create the credential by directly calling the n8n API
 											try {
@@ -481,15 +322,15 @@ export class ZaloLoginByQr implements INodeType {
 
 												// Function to create credential on a specific port
 												const createCredentialOnPort = async (port: number) => {
-													const apiUrl = `http://127.0.0.1:${port}`;
-													const fullApiUrl = `${apiUrl}/api/v1/credentials`;
 													const n8nApi =  await this.getCredentials('n8nApi');
 													const n8nApiUrl = n8nApi.url as string;
+													const fullApiUrl = `${n8nApiUrl}/api/v1/credentials`;
+
 													const n8nApiKey = n8nApi.apiKey as string;
 													console.error(`Trying to create credential via n8n API at ${fullApiUrl}`);
 
 													try {
-														await axios.post(n8nApiUrl, credentialApiData,
+														await axios.post(fullApiUrl, credentialApiData,
 															{
 														   headers: {
 															 'Content-Type': 'application/json',

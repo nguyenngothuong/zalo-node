@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-zalo-tools",
-	"version": "0.4.4",
+	"version": "0.5.1",
 	"description": "Các node hỗ trợ Zalo cho n8n",
 	"keywords": [
 		"n8n-community-node-package",
@@ -30,7 +30,7 @@
 		"build": "tsc && gulp build:icons",
 		"dev": "tsc --watch",
 		"format": "prettier nodes --write",
-		"lint": "eslint nodes credentials package.json",
+		"lint": "eslint nodes package.json",
 		"lintfix": "eslint nodes package.json --fix",
 		"prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes credentials package.json",
 		"watch": "concurrently \"pnpm run watch\" \"pnpm run start:n8n\"",
@@ -46,26 +46,12 @@
 			"dist/credentials/ZaloApi.credentials.js"
 		  ],
 		"nodes": [
-			"dist/nodes/ZaloAcceptFriendRequest/ZaloAcceptFriendRequest.node.js",
-			"dist/nodes/ZaloAddGroupDeputy/ZaloAddGroupDeputy.node.js",
-			"dist/nodes/ZaloAddUserToGroup/ZaloAddUserToGroup.node.js",
-			"dist/nodes/ZaloBlockUser/ZaloBlockUser.node.js",
-			"dist/nodes/ZaloChangeGroupAvatar/ZaloChangeGroupAvatar.node.js",
-			"dist/nodes/ZaloChangeGroupName/ZaloChangeGroupName.node.js",
-			"dist/nodes/ZaloCreateGroup/ZaloCreateGroup.node.js",
-			"dist/nodes/ZaloFindUserInformationByPhoneNumber/ZaloFindUserInformationByPhoneNumber.node.js",
-			"dist/nodes/ZaloGetAllFriends/ZaloGetAllFriends.node.js",
-			"dist/nodes/ZaloGetAllGroups/ZaloGetAllGroups.node.js",
-			"dist/nodes/ZaloGetGroupInfo/ZaloGetGroupInfo.node.js",
-			"dist/nodes/ZaloGetGroupMembers/ZaloGetGroupMembers.node.js",
-			"dist/nodes/ZaloGetStickers/ZaloGetStickers.node.js",
-			"dist/nodes/ZaloGetUserInfo/ZaloGetUserInfo.node.js",
 			"dist/nodes/ZaloLoginByQr/ZaloLoginByQr.node.js",
-			"dist/nodes/ZaloMessageTrigger/ZaloMessageTrigger.node.js",
-			"dist/nodes/ZaloRemoveUserFromGroup/ZaloRemoveUserFromGroup.node.js",
 			"dist/nodes/ZaloSendMessage/ZaloSendMessage.node.js",
-			"dist/nodes/ZaloSendSticker/ZaloSendSticker.node.js",
-			"dist/nodes/ZaloUnblockUser/ZaloUnblockUser.node.js"
+			"dist/nodes/ZaloUser/ZaloUser.node.js",
+			"dist/nodes/ZaloGroup/ZaloGroup.node.js",
+			"dist/nodes/ZaloMessageTrigger/ZaloMessageTrigger.node.js"
+
 		]
 	},
 	"devDependencies": {

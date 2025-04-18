@@ -37,92 +37,47 @@ npm install n8n-nodes-zalo-tools
 
 ## Available Nodes
 
-This package contains the following nodes (see the `nodes` directory for details):
+1. Zalo Login By QR
+Node cho phép đăng nhập vào Zalo thông qua mã QR.
 
- ## Các Node Hỗ Trợ
+2. Zalo Group
+Node quản lý các hoạt động nhóm.
+Operations:
+createGroup: Tạo nhóm mới
+getGroupInfo: Lấy thông tin nhóm
+addGroupDeputy: Thêm phó nhóm
+addUserToGroup: Thêm thành viên
+changeGroupAvatar: Đổi avatar nhóm
+changeGroupName: Đổi tên nhóm
+getGroupMembers: Lấy danh sách thành viên
+getAllGroups: Lấy tất cả nhóm
+removeUserFromGroup: Xóa thành viên
 
-### ZaloAcceptFriendRequest
-- Chấp nhận yêu cầu kết bạn từ người dùng Zalo khác
-- Yêu cầu: ID người gửi yêu cầu kết bạn
+3. Zalo User
+Node quản lý người dùng và bạn bè.
+Operations:
+acceptFriendRequest: Chấp nhận lời mời kết bạn
+sendFriendRequest: Gửi lời mời kết bạn
+blockUser: Chặn người dùng
+unblockUser: Bỏ chặn người dùng
+changeAccountAvatar: Đổi ảnh đại diện
+changeAccountSetting: Thay đổi cài đặt tài khoản
+getUserInfo: Lấy thông tin người dùng
+getAllFriends: Lấy danh sách bạn bè
+findUser: Tìm kiếm người dùng qua số điện thoại
 
-### ZaloAddGroupDeputy
-- Thêm phó quản trị viên cho nhóm Zalo
-- Yêu cầu: ID nhóm và ID người dùng
+4. Zalo Send Message
+Node gửi tin nhắn tới người dùng hoặc nhóm.
+Features:
+Gửi tin nhắn văn bản
 
-### ZaloAddUserToGroup
-- Thêm người dùng vào nhóm Zalo
-- Yêu cầu: ID nhóm và ID người dùng
 
-### ZaloBlockUser
-- Chặn người dùng trên Zalo
-- Yêu cầu: ID người dùng cần chặn
-
-### ZaloChangeGroupAvatar
-- Thay đổi ảnh đại diện nhóm Zalo
-- Yêu cầu: ID nhóm và URL ảnh mới
-
-### ZaloChangeGroupName
-- Thay đổi tên nhóm Zalo
-- Yêu cầu: ID nhóm và tên mới
-
-### ZaloCreateGroup
-- Tạo nhóm mới trên Zalo
-- Yêu cầu: Tên nhóm và danh sách thành viên
-
-### ZaloFindUserInformationByPhoneNumber
-- Tìm thông tin người dùng qua số điện thoại
-- Yêu cầu: Số điện thoại cần tìm
-
-### ZaloGetAllFriends
-- Lấy danh sách tất cả bạn bè
-- Trả về: Danh sách bạn bè với thông tin chi tiết
-
-### ZaloGetAllGroups
-- Lấy danh sách tất cả nhóm
-- Trả về: Danh sách nhóm với thông tin chi tiết
-
-### ZaloGetGroupInfo
-- Lấy thông tin chi tiết của nhóm
-- Yêu cầu: ID nhóm
-- Trả về: Thông tin nhóm, thành viên, quản trị viên
-
-### ZaloGetGroupMembers
-- Lấy danh sách thành viên trong nhóm
-- Yêu cầu: ID nhóm
-- Trả về: Danh sách thành viên với thông tin chi tiết
-
-### ZaloGetStickers
-- Lấy danh sách sticker có sẵn
-- Trả về: Danh sách sticker với ID và thông tin
-
-### ZaloGetUserInfo
-- Lấy thông tin chi tiết của người dùng
-- Yêu cầu: ID người dùng
-- Trả về: Thông tin cá nhân, trạng thái, v.v.
-
-### ZaloLoginByQR
-- Đăng nhập Zalo bằng mã QR
-- Tạo mã QR và chờ quét để đăng nhập
-
-### ZaloMessageTrigger
-- Kích hoạt workflow khi nhận tin nhắn Zalo
-- Hỗ trợ các loại tin nhắn: text, image, voice, sticker, file
-
-### ZaloRemoveUserFromGroup
-- Xóa người dùng khỏi nhóm
-- Yêu cầu: ID nhóm và ID người dùng
-
-### ZaloSendMessage
-- Gửi tin nhắn trên Zalo
-- Hỗ trợ: tin nhắn văn bản, hình ảnh, file
-
-### ZaloSendSticker
-- Gửi sticker trên Zalo
-- Yêu cầu: ID sticker và ID người nhận
-
-### ZaloUnblockUser
-- Bỏ chặn người dùng trên Zalo
-- Yêu cầu: ID người dùng cần bỏ chặn
+5. Zalo Message Trigger
+Node lắng nghe và xử lý các sự kiện tin nhắn.
+Events:
+Tin nhắn mới
+Tin nhắn nhóm
+Thay đổi trạng thái tin nhắn
 
 ## Warning and Thanks
 

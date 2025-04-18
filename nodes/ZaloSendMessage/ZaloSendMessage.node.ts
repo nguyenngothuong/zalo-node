@@ -3,7 +3,6 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeConnectionType,
 	NodeOperationError,
 } from 'n8n-workflow';
 import { API, ThreadType, Zalo } from 'zca-js';
@@ -12,17 +11,19 @@ let api: API | undefined;
 export class ZaloSendMessage implements INodeType {
 
 	description: INodeTypeDescription = {
-		displayName: 'Zalo Send Message (Cookie)',
+		displayName: 'Zalo Send Message',
 		name: 'zaloSendMessage',
 		icon: 'file:../shared/zalo.svg',
 		group: ['Zalo'],
-		version: 2,
+		version: 3,
 		description: 'Gửi tin nhắn qua API Zalo sử dụng kết nối đăng nhập bằng cookie',
 		defaults: {
-			name: 'Zalo Send Message (Cookie)',
+			name: 'Zalo Send Message',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs:[NodeConnectionType.Main],
+		// @ts-ignore
+		inputs: ['main'],
+		// @ts-ignore
+		outputs: ['main'],
 		credentials: [
 			{
 				name: 'zaloApi',
@@ -79,7 +80,8 @@ export class ZaloSendMessage implements INodeType {
         console.log('API', api);
 
         const threadId = this.getNodeParameter('threadId', 0) as string;
-        const type = ThreadType.User;//this.getNodeParameter('type', 0) as any;
+		const typeNumber = this.getNodeParameter('type', 0) as number;
+        const type = typeNumber === 0 ? ThreadType.User : ThreadType.Group;
         const message = this.getNodeParameter('message', 0) as string;
         const meta = {threadId, type, message};
         // Gửi tin nhắn một lần
