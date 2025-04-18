@@ -11,10 +11,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 
-export class ZaloLoginByQR implements INodeType {
+export class ZaloLoginByQr implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Login Via QR Code',
-		name: 'zaloLoginByQR',
+		name: 'zaloLoginByQr',
 		group: ['Zalo'],
 		version: 1,
 		description: 'LĐăng nhập Zalo bằng QR code và lưu thông tin vào Credentia',
@@ -23,7 +23,7 @@ export class ZaloLoginByQR implements INodeType {
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		credentials: [
 			{
 				name: 'zaloApi',

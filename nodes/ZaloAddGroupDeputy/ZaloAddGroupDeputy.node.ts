@@ -14,7 +14,7 @@ export class ZaloAddGroupDeputy implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Add Group Deputy (Cookie)',
 		name: 'zaloAddGroupDeputy',
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		group: ['Zalo'],
 		version: 2,
 		description: 'Thêm phó nhóm vào nhóm Zalo',

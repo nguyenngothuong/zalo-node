@@ -13,7 +13,7 @@ export class ZaloAcceptFriendRequest implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Accept Friend Request (Cookie)',
 		name: 'zaloAcceptFriendRequest',
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		group: ['Zalo'],
 		version: 2,
 		description: 'Chấp nhận lời mời kết bạn qua API Zalo sử dụng kết nối đăng nhập bằng cookie',

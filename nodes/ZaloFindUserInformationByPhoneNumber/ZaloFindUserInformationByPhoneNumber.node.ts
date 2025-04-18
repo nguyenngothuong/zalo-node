@@ -14,7 +14,7 @@ export class ZaloFindUserInformationByPhoneNumber implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Find User Information By PhoneNumber (Cookie)',
 		name: 'zaloFindUserInformationByPhoneNumber',
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		group: ['Zalo'],
 		version: 2,
 		description: 'Tìm người dùng bằng số điện thoại',

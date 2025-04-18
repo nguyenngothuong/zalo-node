@@ -22,7 +22,7 @@ export class ZaloBlockUser implements INodeType {
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		credentials: [
 			{
 				name: 'zaloApi',

@@ -17,7 +17,7 @@ export class ZaloMessageTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Message Trigger',
 		name: 'zaloMessageTrigger',
-		icon: 'file:zalo.svg',
+		icon: 'file:../shared/zalo.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Sự kiện lắng nghe tin nhắn trên Zalo',
@@ -157,11 +157,7 @@ export class ZaloMessageTrigger implements INodeType {
 		const webhookData = this.getWorkflowStaticData('node');
 		const message = webhookData.lastMessage as IDataObject;
         console.log(message);
-		// if (!message) {
-		// 	return {
-		// 		workflowData: [[]],
-		// 	};
-		// }
+
 
 		// Clear the message after processing
 		delete webhookData.lastMessage;
