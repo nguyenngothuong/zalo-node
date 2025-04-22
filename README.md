@@ -87,15 +87,6 @@ Lưu ý: việc sử dụng thư viện này đồng nghĩa với việc bạn �
 
 We would like to thank ZCA-JS for their work on this library.
 
-**Please read this carefully before using the Zalo nodes:**
-
-Lưu ý: việc sử dụng thư viện này đồng nghĩa với việc bạn đang làm trái với chính sách của Zalo và nó có thể khiến cho tài khoản của bạn bị vô hiệu hóa. Chúng tôi sẽ không chịu trách nhiệm nếu điều đó xảy ra, vậy nên hãy cân nhắc trước khi sử dụng.
-
-We would like to thank ZCA-JS for their work on this library.
-
-## More information
-
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
 
 ## License
 

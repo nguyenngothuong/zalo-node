@@ -45,6 +45,7 @@ export class ZaloApi implements ICredentialType {
 			displayName: 'Support Code',
 			name: 'supportCode',
 			type: 'string',
+			hidden: true,
 			default: '',
 			description: 'Support code for Zalo API',
 		},
@@ -53,6 +54,7 @@ export class ZaloApi implements ICredentialType {
 			name: 'licenseKey',
 			type: 'string',
 			default: '',
+			hidden: true,
 			description: 'License key for Zalo API',
 			typeOptions: {
 				password: true,

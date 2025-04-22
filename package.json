@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-zalo-tools",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"description": "Các node hỗ trợ Zalo cho n8n",
 	"keywords": [
 		"n8n-community-node-package",
@@ -17,7 +17,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/dinhtrung1308/zalo-node.git"
+		"url": "https://github.com/ChickenAI/zalo-node"
 	},
 	"engines": {
 		"node": ">=18.10",
@@ -64,13 +64,15 @@
 		"prettier": "^3.3.2",
 		"typescript": "^5.5.3"
 	},
+	"optionalDependencies": {
+		"sharp": "^0.32.1"
+	},
 	"peerDependencies": {
 		"n8n-core": ">=1.0.0",
 		"n8n-workflow": ">=1.0.0"
 	},
 	"dependencies": {
 		"axios": "^1.8.4",
-		"node-notifier": "^10.0.1",
 		"pnpm": "^10.6.5",
 		"zca-js": "2.0.0-beta.14"
 	}

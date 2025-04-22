@@ -7,6 +7,7 @@ import {
     name = 'n8nApi';
     displayName = 'n8n Account Credential';
     documentationUrl = 'n8n-n8n-api';
+    iconUrl = 'file:./shared/n8n.png';
 
     properties: INodeProperties[] = [
       {
