@@ -303,10 +303,12 @@ export class ZaloSendMessage implements INodeType {
 				}
 				
 				const response = await api.sendMessage(messageContent, threadId, type);
-				for (const attachment of messageContent.attachments) {
-					this.logger.info(`Sending message with parameters: ${attachment}`);
+				if (messageContent.attachments && messageContent.attachments.length > 0){
+					for (const attachment of messageContent.attachments) {
+						this.logger.info(`Remove attachment: ${attachment}`);
 
-					removeImage(attachment)
+						removeImage(attachment)
+					}
 				}
 				this.logger.info('Message sent successfully', { threadId, type });
 				returnData.push({
