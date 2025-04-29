@@ -3,9 +3,7 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeOperationError,
-	INodePropertyOptions,
-	ILoadOptionsFunctions,
+	NodeOperationError
 } from 'n8n-workflow';
 import { API, ThreadType, Zalo } from 'zca-js';
 import { saveImage, removeImage } from '../utils/helper';
@@ -18,7 +16,7 @@ export class ZaloSendMessage implements INodeType {
 		name: 'zaloSendMessage',
 		icon: 'file:../shared/zalo.svg',
 		group: ['Zalo'],
-		version: 3,
+		version: 4,
 		description: 'Gửi tin nhắn qua API Zalo sử dụng kết nối đăng nhập bằng cookie',
 		defaults: {
 			name: 'Zalo Send Message',
@@ -195,25 +193,6 @@ export class ZaloSendMessage implements INodeType {
 		],
 	};
 
-	methods = {
-		loadOptions: {
-			async getBinaryProperties(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const returnData: INodePropertyOptions[] = [];
-				const binaryProperties = this.getCurrentNodeParameter('binaryProperties') as string[];
-				
-				if (binaryProperties) {
-					for (const property of binaryProperties) {
-						returnData.push({
-							name: property,
-							value: property,
-						});
-					}
-				}
-				
-				return returnData;
-			},
-		},
-	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const returnData: INodeExecutionData[] = [];
