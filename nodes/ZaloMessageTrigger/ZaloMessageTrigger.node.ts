@@ -63,6 +63,14 @@ export class ZaloMessageTrigger implements INodeType {
 				required: true,
 				description: 'Types of messages to listen for',
 			},
+			{
+				displayName: 'Self Listen',
+				name: 'selfListen',
+				type: 'boolean',
+				default: false,
+				required: true,
+				description: 'Whether to listen to messages sent by yourself',
+			},
 		],
 	};
 
@@ -85,7 +93,8 @@ export class ZaloMessageTrigger implements INodeType {
 					const imeiFromCred = credentials.imei as string;
 					const userAgentFromCred = credentials.userAgent as string;
 
-					const zalo = new Zalo();
+					const selfListen = this.getNodeParameter('selfListen', 0) as boolean;
+					const zalo = new Zalo({ selfListen });
 					api = await zalo.login({ cookie: cookieFromCred, imei: imeiFromCred, userAgent: userAgentFromCred });
 
 					if (!api) {
@@ -95,7 +104,7 @@ export class ZaloMessageTrigger implements INodeType {
 						);
 					}
                     const webhookUrl = this.getNodeWebhookUrl('default') as string;
-                    console.log(webhookUrl)
+                    console.log(webhookUrl);
 					// Add message event listener
 					api.listener.on('message', async (message) => {
 						const webhookData = this.getWorkflowStaticData('node');
