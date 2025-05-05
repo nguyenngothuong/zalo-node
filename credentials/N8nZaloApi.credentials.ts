@@ -3,9 +3,9 @@ import {
     INodeProperties,
   } from 'n8n-workflow';
   
-  export class N8nApi implements ICredentialType {
-    name = 'n8nApi';
-    displayName = 'n8n Account Credential';
+  export class N8nZaloApi implements ICredentialType {
+    name = 'n8nZaloApi';
+    displayName = 'n8n Zalo Account Credential';
     documentationUrl = 'n8n-n8n-api';
     iconUrl = 'file:./shared/n8n.png';
 

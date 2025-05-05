@@ -42,7 +42,7 @@
 	"n8n": {
 		"n8nNodesApiVersion": 1,
 		"credentials": [
-			"dist/credentials/N8nApi.credentials.js",
+			"dist/credentials/N8nZaloApi.credentials.js",
 			"dist/credentials/ZaloApi.credentials.js"
 		],
 		"nodes": [
