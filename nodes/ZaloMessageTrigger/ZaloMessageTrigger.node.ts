@@ -69,7 +69,7 @@ export class ZaloMessageTrigger implements INodeType {
 				type: 'boolean',
 				default: false,
 				required: true,
-				description: 'Whether to listen to messages sent by yourself',
+				description: 'Cho phép lắng nghe tin nhắn của chính mình tự gửi',
 			},
 		],
 	};
@@ -177,4 +177,4 @@ export class ZaloMessageTrigger implements INodeType {
 			workflowData: [this.helpers.returnJsonArray(req.body)],
 		};
 	}
-} 
+}
