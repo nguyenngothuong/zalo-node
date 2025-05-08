@@ -9,7 +9,7 @@ import { Zalo } from 'zca-js';
 import * as path from 'path';
 import axios from 'axios';
 
-export class ZaloLoginByQr implements INodeType {
+export class ZaloLoginByQR implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zalo Login Via QR Code',
 		name: 'zaloLoginByQr',
