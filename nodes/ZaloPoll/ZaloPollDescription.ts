@@ -120,7 +120,7 @@ export const zaloPollFields: INodeProperties[] = [
 				operation: ['createPoll'],
 			},
 		},
-		description: 'Thời hạn bình chọn. (Để trống nếu không có thời hạn)',
+		description: 'Thời hạn bình chọn (Để trống nếu không có thời hạn)',
 	},
     {
 		displayName: 'Ghim lên đầu trò chuyện',
@@ -134,7 +134,7 @@ export const zaloPollFields: INodeProperties[] = [
 				operation: ['createPoll'],
 			},
 		},
-		description: 'Ghim lên đầu trò chuyện',
+		description: 'Tạo ghim lên đầu trò chuyện',
 	},
     {
 		displayName: 'Chọn nhiều phương án',

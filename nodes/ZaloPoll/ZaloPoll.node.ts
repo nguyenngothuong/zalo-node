@@ -116,7 +116,7 @@ export class ZaloPoll implements INodeType {
 
                         // Send create poll
                         if (!api) {
-                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized');
+                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized', { itemIndex: i });
                         }
 
                         const response = await api.createPoll(createPollData, groupId);
@@ -142,7 +142,7 @@ export class ZaloPoll implements INodeType {
 
                         // Send create poll
                         if (!api) {
-                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized');
+                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized', { itemIndex: i });
                         }
 
                         const response = await api.getPollDetail(poll_id);
@@ -166,7 +166,7 @@ export class ZaloPoll implements INodeType {
 
                         // Send create poll
                         if (!api) {
-                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized');
+                            throw new NodeOperationError(this.getNode(), 'Zalo API not initialized', { itemIndex: i });
                         }
 
                         const response = await api.lockPoll(poll_id);
