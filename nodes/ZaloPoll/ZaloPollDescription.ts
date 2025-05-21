@@ -70,31 +70,58 @@ export const zaloPollFields: INodeProperties[] = [
 		description: 'Đặt câu hỏi bình chọn',
 	},
 	{
-		displayName: 'Các lựa chọn',
-		name: 'pollOptionsCollection',  // Đổi tên để tránh xung đột với trường cũ
-		type: 'fixedCollection',
-		typeOptions: {
-		  multipleValues: true,
-		  sortable: true,  // Cho phép kéo thả để sắp xếp
-		},
-		default: {
-		  options: [
-			{ option: '' },
-			{ option: '' },
-		  ],
-		},
+		displayName: 'Kiểu nhập lựa chọn',
+		name: 'optionInputType',
+		type: 'options',
+		options: [
+			{
+			name: 'Danh sách',
+			value: 'list',
+			description: 'Nhập từng lựa chọn riêng biệt',
+			},
+			{
+			name: 'Văn bản',
+			value: 'text',
+			description: 'Nhập tất cả lựa chọn trong một ô, phân tách bằng dấu phẩy',
+			},
+		],
+		default: 'list',
 		displayOptions: {
-		  show: {
+			show: {
 			resource: ['zaloPoll'],
 			operation: ['createPoll'],
-		  },
+			},
+		},
+	},
+	{
+		// Danh sách hiện tại (fixedCollection)
+		displayName: 'Các lựa chọn',
+		name: 'pollOptionsCollection',
+		type: 'fixedCollection',
+		placeholder: 'Thêm lựa chọn',
+		typeOptions: {
+			multipleValues: true,
+			sortable: true
+		},
+		default: {
+			options: [
+			{ option: '' },
+			{ option: '' },
+			],
+		},
+		displayOptions: {
+			show: {
+			resource: ['zaloPoll'],
+			operation: ['createPoll'],
+			optionInputType: ['list'],
+			},
 		},
 		options: [
-		  {
+			{
 			name: 'options',
 			displayName: 'Lựa chọn',
 			values: [
-			  {
+				{
 				displayName: 'Lựa chọn',
 				name: 'option',
 				type: 'string',
@@ -102,12 +129,28 @@ export const zaloPollFields: INodeProperties[] = [
 				placeholder: 'Nhập lựa chọn...',
 				description: 'Nội dung của lựa chọn',
 				required: true,
-			  },
+				},
 			],
-		  },
+			},
 		],
 		description: 'Thêm các lựa chọn cho bình chọn',
-	  },
+	},
+	{
+
+		displayName: 'Các lựa chọn',
+		name: 'optionsString',
+		type: 'string',
+		default: 'Lựa chọn 1, Lựa chọn 2, Lựa chọn 3',
+		placeholder: 'Nhập các lựa chọn, phân tách bằng dấu phẩy...',
+		displayOptions: {
+			show: {
+			resource: ['zaloPoll'],
+			operation: ['createPoll'],
+			optionInputType: ['text'],
+			},
+		},
+		description: 'Nhập các lựa chọn, mỗi lựa chọn phân tách bằng dấu phẩy.',
+	},
     {
 		displayName: 'Thời hạn bình chọn',
 		name: 'expiredTime',
