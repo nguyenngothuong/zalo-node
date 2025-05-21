@@ -52,7 +52,8 @@
 			"dist/nodes/ZaloGroup/ZaloGroup.node.js",
 			"dist/nodes/ZaloMessageTrigger/ZaloMessageTrigger.node.js",
 			"dist/nodes/ZaloFriendTrigger/ZaloFriendTrigger.node.js",
-			"dist/nodes/ZaloPoll/ZaloPoll.node.js"
+			"dist/nodes/ZaloPoll/ZaloPoll.node.js",
+			"dist/nodes/ZaloTag/ZaloTag.node.js"
 		]
 	},
 	"devDependencies": {
