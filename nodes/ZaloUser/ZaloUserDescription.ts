@@ -65,13 +65,110 @@ export const zaloUserOperations: INodeProperties[] = [
 				description: 'Tìm kiếm người dùng',
 				action: 'Tìm kiếm người dùng',
 			},
+			{
+				name: 'Đổi tên gợi nhớ',
+				value: 'changeAliasName',
+				description: 'Đổi tên gợi nhớ của bạn bè',
+				action: 'Đổi tên gợi nhớ',
+			},
+			{
+				name: 'Thu hồi tin nhắn',
+				value: 'undoMessage',
+				description: 'Thu hồi tin nhắn',
+				action: 'Thu hồi tin nhắn',
+			},
 		],
 		default: 'getUserInfo',
 	},
 ];
 
 export const zaloUserFields: INodeProperties[] = [
-	// Accept Friend Request
+	//Undo Message
+	{
+		displayName: 'Thread ID',
+		name: 'threadId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['undoMessage'],
+			},
+		},
+		default: '',
+		description: 'Thread ID',
+	},
+	{
+		displayName: 'Thread Type',
+		name: 'threadType',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['undoMessage'],
+			},
+		},
+		default: '',
+		description: 'Thread Type',
+	},
+	{
+		displayName: 'msgId',
+		name: 'msgId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['undoMessage'],
+			},
+		},
+		default: '',
+		description: 'Message ID',
+	},
+	{
+		displayName: 'cliMsgId',
+		name: 'cliMsgId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['undoMessage'],
+			},
+		},
+		default: '',
+		description: 'client message id',
+	},
+		// Change alias name
+	{
+		displayName: 'User ID',
+		name: 'userId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['changeAliasName'],
+			},
+		},
+		default: '',
+		description: 'ID của người dùng cần đổi tên gợi nhớ',
+	},
+	{
+		displayName: 'Alias Name',
+		name: 'aliasName',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['zaloUser'],
+				operation: ['changeAliasName'],
+			},
+		},
+		default: '',
+		description: 'Tên gợi nhớ mới',
+	},
 	{
 		displayName: 'User ID',
 		name: 'userId',
@@ -312,4 +409,4 @@ export const zaloUserFields: INodeProperties[] = [
 		default: 50,
 		description: 'Số lượng kết quả tối đa',
 	},
-]; 
+];

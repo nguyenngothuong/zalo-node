@@ -6,7 +6,7 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import { zaloUserOperations, zaloUserFields } from './ZaloUserDescription';
-import { API, Zalo } from 'zca-js';
+import { API, ThreadType, Zalo } from 'zca-js';
 
 let api: API | undefined;
 
@@ -229,6 +229,49 @@ export class ZaloUser implements INodeType {
 							},
 						});
 					}
+
+					// Đổi tên gợi nhớ
+					else if (operation === 'changeAliasName') {
+						const userId = this.getNodeParameter('userId', i) as string;
+						const aliasName = this.getNodeParameter('aliasName', i) as string;
+
+						const response = await api.changeFriendAlias(aliasName, userId);
+
+						returnData.push({
+							json: {
+								status: "Thành công",
+								response: response,
+							},
+							pairedItem: {
+								item: i,
+							},
+						});
+					}
+
+					//Undo message
+					else if (operation === 'undoMessage') {
+						const threadId = this.getNodeParameter('threadId', i) as string;
+						const type = this.getNodeParameter('threadType', i) as ThreadType;
+						const msgId = this.getNodeParameter('msgId', i) as string;
+						const cliMsgId = this.getNodeParameter('cliMsgId', i) as string;
+
+						const UndoOptions = {
+							msgId: msgId,
+							cliMsgId: cliMsgId
+						}
+
+						const response = await api.undo(UndoOptions, threadId, type);
+
+						returnData.push({
+							json: {
+								status: "Thành công",
+								response: response,
+							},
+							pairedItem: {
+								item: i,
+							},
+						});
+					}
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {
@@ -250,4 +293,4 @@ export class ZaloUser implements INodeType {
 
 		return [returnData];
 	}
-} 
+}
