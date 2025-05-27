@@ -85,12 +85,39 @@ export class ZaloPoll implements INodeType {
                         const groupId = this.getNodeParameter('groupId', i) as string;
                         const question = this.getNodeParameter('question', i) as string;
 
-                        const pollOptionsCollection = this.getNodeParameter('pollOptionsCollection', i) as {
-                            options: Array<{
-                              option: string;
+                        const optionInputType = this.getNodeParameter('optionInputType', i, 'list') as string;
+                        
+                        let options: string[] = [];
+
+                        if (optionInputType === 'list') {
+                        try {
+                            const pollOptionsCollection = this.getNodeParameter('pollOptionsCollection', i, { options: [] }) as {
+                            options?: Array<{
+                                option: string;
                             }>;
-                          };
-                        const options = pollOptionsCollection.options.map(item => item.option);
+                            };
+                            
+                            if (pollOptionsCollection?.options && Array.isArray(pollOptionsCollection.options)) {
+                            options = pollOptionsCollection.options
+                                .map(item => (item?.option || '').trim())
+                                .filter(option => option !== '');
+                            }
+                        } catch (error) {
+                            throw new NodeOperationError(this.getNode(), 'Lỗi xử lý các lựa chọn: ' + (error.message || 'Lỗi không xác định'));
+                        }
+                        } else if (optionInputType === 'text') {
+                        const optionsString = this.getNodeParameter('optionsString', i, '') as string;
+                        if (optionsString && optionsString.trim() !== '') {
+                            options = optionsString.split(',')
+                            .map(option => option.trim())
+                            .filter(option => option !== '');
+                        }
+                        }
+
+                        // Kiểm tra xem có ít nhất một lựa chọn hay không
+                        if (!options || options.length === 0) {
+                            throw new NodeOperationError(this.getNode(), 'Vui lòng nhập ít nhất một lựa chọn cho bình chọn');
+                        }
 
                         const expiredTime = this.getNodeParameter('expiredTime', i, null) !== null ? new Date(this.getNodeParameter('expiredTime', i) as string).getTime() || 0 : 0;
                         const pinAct = this.getNodeParameter('pinAct', i, false) as boolean;
