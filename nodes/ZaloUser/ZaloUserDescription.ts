@@ -35,12 +35,12 @@ export const zaloUserOperations: INodeProperties[] = [
 				description: 'Bỏ chặn người dùng',
 				action: 'Bỏ chặn người dùng',
 			},
-			{
-				name: 'Đổi ảnh đại diện',
-				value: 'changeAccountAvatar',
-				description: 'Đổi ảnh đại diện',
-				action: 'Đổi ảnh đại diện',
-			},
+			// {
+			// 	name: 'Đổi ảnh đại diện',
+			// 	value: 'changeAccountAvatar',
+			// 	description: 'Đổi ảnh đại diện',
+			// 	action: 'Đổi ảnh đại diện',
+			// },
 			{
 				name: 'Thay đổi cài đặt tài khoản',
 				value: 'changeAccountSetting',
@@ -246,35 +246,35 @@ export const zaloUserFields: INodeProperties[] = [
 		description: 'ID của người dùng cần bỏ chặn',
 	},
 
-	// Change Account Avatar
-	{
-		displayName: 'User ID',
-		name: 'userId',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['zaloUser'],
-				operation: ['changeAccountAvatar'],
-			},
-		},
-		default: '',
-		description: 'ID của người dùng cần đổi ảnh đại diện',
-	},
-	{
-		displayName: 'File Path',
-		name: 'filePath',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['zaloUser'],
-				operation: ['changeAccountAvatar'],
-			},
-		},
-		default: '',
-		description: 'Đường dẫn đến file ảnh đại diện',
-	},
+	// // Change Account Avatar
+	// {
+	// 	displayName: 'User ID',
+	// 	name: 'userId',
+	// 	type: 'string',
+	// 	required: true,
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['zaloUser'],
+	// 			operation: ['changeAccountAvatar'],
+	// 		},
+	// 	},
+	// 	default: '',
+	// 	description: 'ID của người dùng cần đổi ảnh đại diện',
+	// },
+	// {
+	// 	displayName: 'File Path',
+	// 	name: 'filePath',
+	// 	type: 'string',
+	// 	required: true,
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['zaloUser'],
+	// 			operation: ['changeAccountAvatar'],
+	// 		},
+	// 	},
+	// 	default: '',
+	// 	description: 'Đường dẫn đến file ảnh đại diện',
+	// },
 
 	// Change Account Setting
 	{

@@ -147,32 +147,31 @@ export class ZaloUser implements INodeType {
 						});
 					}
 
-					// Đổi ảnh đại diện
-					else if (operation === 'changeAccountAvatar') {
-						const userId = this.getNodeParameter('userId', i) as string;
-						const filePath = this.getNodeParameter('filePath', i) as string;
+					// // Đổi ảnh đại diện
+					// else if (operation === 'changeAccountAvatar') {
+					// 	const userId = this.getNodeParameter('userId', i) as string;
+					// 	const filePath = this.getNodeParameter('filePath', i) as string;
 
-						const response = await api.changeAccountAvatar(userId, filePath);
+					// 	const response = await api.changeAccountAvatar(userId, filePath);
 
-						returnData.push({
-							json: {
-                                status: "Thành công",
-                                response: response,
-                            },
-							pairedItem: {
-								item: i,
-							},
-						});
-					}
+					// 	returnData.push({
+					// 		json: {
+                    //             status: "Thành công",
+                    //             response: response,
+                    //         },
+					// 		pairedItem: {
+					// 			item: i,
+					// 		},
+					// 	});
+					// }
 
 					// Thay đổi cài đặt tài khoản
 					else if (operation === 'changeAccountSetting') {
 						const name = this.getNodeParameter('name', i) as string;
-						const dob = this.getNodeParameter('dob', i) as string;
+						const dob = this.getNodeParameter('dob', i) as any;
 						const gender = this.getNodeParameter('gender', i) as number;
-						const language = this.getNodeParameter('language', i) as string;
 
-						const response = await api.changeAccountSetting(name, dob, gender, language);
+						const response = await api.updateProfile(name, dob, gender);
 
 						returnData.push({
 							json: {
