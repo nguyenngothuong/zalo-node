@@ -96,7 +96,7 @@ export const zaloUserFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Thread ID',
+		description: 'ID của người dùng cần thu hồi tin nhắn',
 	},
 	{
 		displayName: 'Thread Type',
@@ -110,7 +110,7 @@ export const zaloUserFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Thread Type',
+		description: 'Loại user',
 	},
 	{
 		displayName: 'msgId',
@@ -138,7 +138,7 @@ export const zaloUserFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'client message id',
+		description: 'Client message ID',
 	},
 		// Change alias name
 	{

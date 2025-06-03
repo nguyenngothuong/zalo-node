@@ -64,7 +64,7 @@ export const zaloGroupOperations: INodeProperties[] = [
 			{
 				name: 'Xóa Thành Viên Khỏi Nhóm',
 				value: 'removeUserFromGroup',
-				description: 'Xóa thành viên khỏi nhóm',
+				description: 'Xóa thành ra viên khỏi nhóm',
 				action: 'Xóa Thành Viên Khỏi Nhóm',
 			},
 			{
@@ -383,6 +383,6 @@ export const zaloGroupFields: INodeProperties[] = [
 				operation: ['createNote'],
 			},
 		},
-		description: 'Pin ghi chú',
+		description: 'Ghim ghi chú lên đầu nhóm',
 	},
 ]; 

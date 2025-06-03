@@ -149,7 +149,7 @@ export const zaloPollFields: INodeProperties[] = [
 			optionInputType: ['text'],
 			},
 		},
-		description: 'Nhập các lựa chọn, mỗi lựa chọn phân tách bằng dấu phẩy.',
+		description: 'Nhập các lựa chọn, mỗi lựa chọn phân tách bằng dấu phẩy',
 	},
     {
 		displayName: 'Thời hạn bình chọn',

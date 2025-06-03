@@ -116,7 +116,7 @@ export class ZaloPoll implements INodeType {
 
                         // Kiểm tra xem có ít nhất một lựa chọn hay không
                         if (!options || options.length === 0) {
-                            throw new NodeOperationError(this.getNode(), 'Vui lòng nhập ít nhất một lựa chọn cho bình chọn');
+                            throw new NodeOperationError(this.getNode(), 'Vui lòng nhập ít nhất một lựa chọn cho bình chọn', { itemIndex: i });
                         }
 
                         const expiredTime = this.getNodeParameter('expiredTime', i, null) !== null ? new Date(this.getNodeParameter('expiredTime', i) as string).getTime() || 0 : 0;
