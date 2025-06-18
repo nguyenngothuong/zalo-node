@@ -6,7 +6,7 @@ import {
 	NodeOperationError
 } from 'n8n-workflow';
 import { API, ThreadType, Zalo } from 'zca-js';
-import { saveImage, removeImage } from '../utils/helper';
+import { saveFile, removeFile } from '../utils/helper';
 
 let api: API | undefined;
 
@@ -166,7 +166,7 @@ export class ZaloSendMessage implements INodeType {
 								type: 'options',
 								options: [
 									{
-										name: 'Image URL',
+										name: 'Image URL/File URL',
 										value: 'url',
 									}
 								],
@@ -174,7 +174,7 @@ export class ZaloSendMessage implements INodeType {
 								description: 'Loại file đính kèm',
 							},
 							{
-								displayName: 'Image URL',
+								displayName: 'Image URL/File URL',
 								name: 'imageUrl',
 								type: 'string',
 								default: '',
@@ -183,7 +183,7 @@ export class ZaloSendMessage implements INodeType {
 										'type': ['url'],
 									},
 								},
-								description: 'URL công khai của ảnh',
+								description: 'URL công khai của ảnh hoặc file',
 							}
 						],
 					},
@@ -266,7 +266,7 @@ export class ZaloSendMessage implements INodeType {
 					for (const attachment of attachments.attachment) {
 						let fileData;
 						if (attachment.type === 'url') {
-							 fileData = await saveImage(attachment.imageUrl);
+							 fileData = await saveFile(attachment.imageUrl);
 						}
 						
 
@@ -306,7 +306,7 @@ export class ZaloSendMessage implements INodeType {
 					for (const attachment of messageContent.attachments) {
 						this.logger.info(`Remove attachment: ${attachment}`);
 
-						removeImage(attachment)
+						removeFile(attachment)
 					}
 				}
 				this.logger.info('Message sent successfully', { threadId, type });
