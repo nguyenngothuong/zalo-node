@@ -5,8 +5,8 @@ import {
   } from 'n8n-workflow';
   
   export class N8nZaloApi implements ICredentialType {
-    name = 'n8nZaloApi';
-    displayName = 'n8n Zalo Account Credential';
+    name = 'n8nApiZaloApi';
+    displayName = 'n8n API Account';
     documentationUrl = 'n8n-n8n-api';
     
     icon: Icon = 'file:shared/n8n.png';

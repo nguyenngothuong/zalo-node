@@ -6,7 +6,6 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import { Zalo } from 'zca-js';
-import * as path from 'path';
 import axios from 'axios';
 
 export class ZaloLoginByQr implements INodeType {
@@ -26,14 +25,9 @@ export class ZaloLoginByQr implements INodeType {
 		icon: 'file:../shared/zalo.svg',
 		credentials: [
 			{
-				name: 'zaloApi',
-				required: false,
-				displayName: 'Zalo Credential to connect with',
-			},
-			{
-				name: 'n8nZaloApi',
+				name: 'n8nApiZaloApi',
 				required: true,
-				displayName: 'n8n Account Credential',
+				displayName: 'n8n API Account (Required - only API Key & URL)',
 			  },
 		],
 		properties: [
@@ -54,37 +48,17 @@ export class ZaloLoginByQr implements INodeType {
 		const timeout = 30; // Fixed timeout of 30 seconds
 		const fileName = 'zalo-qr-code.png'; // Fixed filename
 
-		// Get the credentials if provided
-		let zaloCredential : any;
+		// Get the n8n API credential (required)
 		let n8nCredential : any;
-
-		// Try to get Zalo API credential
-		try {
-			zaloCredential = await this.getCredentials('zaloApi');
-		} catch (error) {
-			// No Zalo credential selected, which is fine
-		}
 
 		// Try to get n8n API credential
 		try {
-			n8nCredential = await this.getCredentials('n8nZaloApi');
+			n8nCredential = await this.getCredentials('n8nApiZaloApi');
 		} catch (error) {
-			// No n8n credential selected, which is fine
+			throw new NodeOperationError(this.getNode(), 'n8n API credentials are required for QR login');
 		}
 
-		// Determine which credential to use
-		let selectedCredential = undefined;
-
-		// If we have n8n credential, use it
-		if (n8nCredential) {
-			console.error('Using n8n account credential');
-			selectedCredential = n8nCredential;
-		} else if (zaloCredential) {
-			console.error('Using Zalo API credential');
-			selectedCredential = zaloCredential;
-		} else {
-			console.error('No credentials provided, will generate QR code for login');
-		}
+		console.error('Using n8n account credential for QR login');
 
 		try {
 			
@@ -98,60 +72,8 @@ export class ZaloLoginByQr implements INodeType {
 				zaloOptions.proxy = proxy;
 			}
 
-			// Initialize Zalo
-			let zalo: any;
-
-			// If we have credentials, use them
-			if (selectedCredential) {
-				console.error('Using existing Zalo credentials');
-				zalo = new Zalo(zaloOptions);
-
-				// Check if we're using n8n credential or Zalo credential
-				if (selectedCredential === n8nCredential) {
-					// Using n8n credential - we need to get the Zalo credentials from the n8n credential
-					console.error('Using n8n credential to get Zalo credentials');
-
-					// Get the credential data from the n8n credential
-					const n8nApiKey = selectedCredential.apiKey as string;
-					const n8nUrl = selectedCredential.url as string || 'http://localhost:5678';
-
-					console.error(`Using n8n API at ${n8nUrl} with API key ${n8nApiKey ? 'provided' : 'not provided'}`);
-
-					// For now, we'll just log in with QR code since we don't have a way to get Zalo credentials from n8n
-					console.error('n8n credential support is not fully implemented yet. Will use QR code login.');
-
-					// Re-initialize Zalo without credentials
-					zalo = new Zalo(zaloOptions);
-				} else {
-					// Using Zalo credential
-					console.error('Using Zalo credential for login');
-
-					// Use the credentials to login
-					const cookie = selectedCredential.cookie as string;
-					const imei = selectedCredential.imei as string;
-					const userAgent = selectedCredential.userAgent as string;
-					const supportCode = selectedCredential.supportCode as string;
-					const licenseKey = selectedCredential.licenseKey as string;
-
-					// Check if we have a proxy in the credential
-					if (selectedCredential.proxy) {
-						console.error('Using proxy from credential:', selectedCredential.proxy);
-						zaloOptions.proxy = selectedCredential.proxy as string;
-					}
-
-					// Log in with the credentials
-					await zalo.login({
-						cookie,
-						imei,
-						userAgent,
-						supportCode,
-						licenseKey,
-					} as any);
-				}
-			} else {
-				// No credentials, create a new instance
-				zalo = new Zalo(zaloOptions);
-			}
+			// Initialize Zalo for QR login
+			const zalo = new Zalo(zaloOptions);
 			console.error('Starting Zalo QR login process...');
 
 			// Function to process context and save credentials
@@ -322,7 +244,7 @@ export class ZaloLoginByQr implements INodeType {
 
 												// Function to create credential on a specific port
 												const createCredentialOnPort = async (port: number) => {
-													const n8nApi =  await this.getCredentials('n8nZaloApi');
+													const n8nApi =  await this.getCredentials('n8nApiZaloApi');
 													const n8nApiUrl = n8nApi.url as string;
 													const fullApiUrl = `${n8nApiUrl}/api/v1/credentials`;
 
@@ -447,14 +369,9 @@ export class ZaloLoginByQr implements INodeType {
 			const newItem: INodeExecutionData = {
 				json: {
 					success: true,
-					message: selectedCredential === n8nCredential
-						? 'Using n8n account credential. QR code generated successfully.'
-						: (selectedCredential === zaloCredential
-							? 'Using existing Zalo credentials. QR code generated successfully.'
-							: 'QR code generated successfully. Scan with Zalo app to login.'),
+					message: 'QR code generated successfully. Scan with Zalo app to login. Credentials will be auto-created after successful login.',
 					fileName,
-					usingExistingCredential: !!selectedCredential,
-					credentialType: selectedCredential === n8nCredential ? 'n8nZaloApi' : (selectedCredential === zaloCredential ? 'zaloApi' : null),
+					credentialType: 'n8nApiZaloApi',
 				},
 				binary: {
 					data: await this.helpers.prepareBinaryData(binaryData, fileName, 'image/png'),
@@ -465,23 +382,10 @@ export class ZaloLoginByQr implements INodeType {
 
 			// Add credential creation instructions to the output
 			if (returnData[0] && returnData[0].json) {
-				if (!selectedCredential) {
-					returnData[0].json.credentialInstructions = 'Credentials have been saved to file. Credentials will be created automatically if n8n API credentials are provided.';
-					returnData[0].json.credentialFilePath = path.join(process.cwd(), 'output', 'zalo-credentials.json');
-					returnData[0].json.autoCreateScript = 'node auto-create-zalo-credential.js';
-					returnData[0].json.autoCreateApi = 'Credentials will be created automatically via n8n API if n8n API credentials are provided.';
-				} else if (selectedCredential === n8nCredential) {
-					returnData[0].json.credentialInstructions = 'Using n8n account credential. New Zalo credentials will be created automatically after successful login.';
-					returnData[0].json.credentialName = selectedCredential.name || 'Unknown';
-					returnData[0].json.credentialId = selectedCredential.id || 'Unknown';
-					returnData[0].json.credentialType = 'n8nZaloApi';
-					returnData[0].json.autoCreateApi = 'Credentials will be created automatically via n8n API after successful login.';
-				} else {
-					returnData[0].json.credentialInstructions = 'Using existing Zalo credentials from the selected credential.';
-					returnData[0].json.credentialName = selectedCredential.name || 'Unknown';
-					returnData[0].json.credentialId = selectedCredential.id || 'Unknown';
-					returnData[0].json.credentialType = 'zaloApi';
-				}
+				returnData[0].json.credentialInstructions = 'Using n8n API credential. New Zalo credentials will be created automatically after successful QR login.';
+				returnData[0].json.credentialName = n8nCredential.name || 'Unknown';
+				returnData[0].json.credentialId = n8nCredential.id || 'Unknown';
+				returnData[0].json.autoCreateApi = 'Credentials will be created automatically via n8n API after successful login.';
 			}
 
 			return [returnData];
