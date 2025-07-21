@@ -7,6 +7,7 @@ import {
 } from 'n8n-workflow';
 import { API, ThreadType, Zalo } from 'zca-js';
 import { saveFile, removeFile } from '../utils/helper';
+import * as path from 'path';
 
 let api: API | undefined;
 
@@ -299,8 +300,18 @@ export class ZaloSendMessage implements INodeType {
 									this.logger.info(`Processing URL: ${url}`);
 									const fileData = await saveFile(url);
 									if (fileData) {
-										messageContent.attachments.push(fileData);
-										this.logger.info(`Successfully downloaded: ${fileData}`);
+										// Check if file type is supported by Zalo
+										const ext = path.extname(fileData).toLowerCase();
+										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+										
+										if (supportedImageExts.includes(ext)) {
+											messageContent.attachments.push(fileData);
+											this.logger.info(`Successfully downloaded image: ${fileData}`);
+										} else {
+											this.logger.warn(`File type ${ext} may not be supported by Zalo: ${fileData}`);
+											// Still try to send, but warn user
+											messageContent.attachments.push(fileData);
+										}
 									} else {
 										this.logger.error(`Failed to download file from URL: ${url}`);
 									}
@@ -327,8 +338,18 @@ export class ZaloSendMessage implements INodeType {
 									this.logger.info(`Processing URL: ${url}`);
 									const fileData = await saveFile(url);
 									if (fileData) {
-										messageContent.attachments.push(fileData);
-										this.logger.info(`Successfully downloaded: ${fileData}`);
+										// Check if file type is supported by Zalo
+										const ext = path.extname(fileData).toLowerCase();
+										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+										
+										if (supportedImageExts.includes(ext)) {
+											messageContent.attachments.push(fileData);
+											this.logger.info(`Successfully downloaded image: ${fileData}`);
+										} else {
+											this.logger.warn(`File type ${ext} may not be supported by Zalo: ${fileData}`);
+											// Still try to send, but warn user
+											messageContent.attachments.push(fileData);
+										}
 									} else {
 										this.logger.error(`Failed to download file from URL: ${url}`);
 									}
@@ -362,6 +383,9 @@ export class ZaloSendMessage implements INodeType {
 				
 				// Send message
 				const response = await api.sendMessage(messageContent, threadId, type);
+				
+				// Debug logging for response structure
+				this.logger.info(`Zalo API response: ${JSON.stringify(response)}`);
 
 				//Remove temp img
 				if (messageContent.attachments && messageContent.attachments.length > 0){
@@ -374,14 +398,17 @@ export class ZaloSendMessage implements INodeType {
 				this.logger.info('Message sent successfully', { threadId, type });
 
 
+				// Ensure response is properly formatted for n8n
+				const responseData = {
+					success: true,
+					threadId,
+					threadType: type,
+					messageContent,
+					response: response || {}
+				};
+				
 				returnData.push({
-					json: {
-						success: true,
-						response,
-						threadId,
-						threadType: type,
-						messageContent,
-					},
+					json: responseData,
 				});
 				
 			} catch (error) {
