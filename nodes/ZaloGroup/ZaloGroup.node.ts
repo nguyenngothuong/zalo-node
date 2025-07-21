@@ -188,10 +188,11 @@ export class ZaloGroup implements INodeType {
 
 						const response = await api.getGroupInfo(groupId);
                         const groupInfo = response.gridInfoMap[groupId];
+						// Apply limit to all member arrays
 						const members = groupInfo.memberIds?.slice(0, limit) || [];
-                        const admins = groupInfo.adminIds || [];
-                        const currentMems = groupInfo.currentMems || [];
-                        const updateMems = groupInfo.updateMems || [];
+                        const admins = groupInfo.adminIds?.slice(0, limit) || [];
+                        const currentMems = groupInfo.currentMems?.slice(0, limit) || [];
+                        const updateMems = groupInfo.updateMems?.slice(0, limit) || [];
                         const totalMember = groupInfo.totalMember || 0;
 
 						returnData.push({
@@ -204,10 +205,55 @@ export class ZaloGroup implements INodeType {
 
 					// Lấy tất cả nhóm
 					else if (operation === 'getAllGroups') {
+						const limit = this.getNodeParameter('limit', i) as number;
 						const response = await api.getAllGroups();
+						
+						// Apply limit to groups response
+						let limitedResponse: any = response;
+						let totalGroups = 0;
+						
+						// Handle gridVerMap (version info for groups) - using any to bypass TypeScript
+						const responseAny = response as any;
+						if (responseAny && responseAny.gridVerMap) {
+							const groupIds = Object.keys(responseAny.gridVerMap);
+							totalGroups = groupIds.length;
+							const limitedGroupIds = groupIds.slice(0, limit);
+							
+							const limitedGridVerMap: any = {};
+							limitedGroupIds.forEach(groupId => {
+								limitedGridVerMap[groupId] = responseAny.gridVerMap[groupId];
+							});
+							
+							limitedResponse = {
+								...response,
+								gridVerMap: limitedGridVerMap
+							};
+						}
+						
+						// Handle gridInfoMap if it exists
+						if (response && response.gridInfoMap) {
+							const groupIds = Object.keys(response.gridInfoMap);
+							if (totalGroups === 0) totalGroups = groupIds.length;
+							const limitedGroupIds = groupIds.slice(0, limit);
+							
+							const limitedGridInfoMap: any = {};
+							limitedGroupIds.forEach(groupId => {
+								limitedGridInfoMap[groupId] = response.gridInfoMap[groupId];
+							});
+							
+							limitedResponse = {
+								...limitedResponse,
+								gridInfoMap: limitedGridInfoMap
+							};
+						}
 
 						returnData.push({
-							json: { response } as IDataObject,
+							json: { 
+								response: limitedResponse, 
+								totalGroups: totalGroups, 
+								limitedToCount: limit,
+								actualReturnedCount: limitedResponse?.gridVerMap ? Object.keys(limitedResponse.gridVerMap).length : 0
+							} as IDataObject,
 							pairedItem: {
 								item: i,
 							},

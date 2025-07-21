@@ -6,21 +6,23 @@ Node dành riêng cho n8n này được thiết kế hoạt động hoàn toàn 
 
 Node này mô phỏng trình duyệt để tương tác trực tiếp với Zalo Web, cho phép tự động hóa liền mạch ngay trong n8n. Đây là dự án mã nguồn mở, mở rộng cơ hội cho cộng đồng cùng đóng góp ý kiến và phát triển thêm các tính năng mới, nhằm xây dựng hệ thống tự động hóa Zalo tiên tiến, hiệu quả và an toàn hơn.
 
-## 🚀 Các cải tiến mới trong phiên bản 0.6.8
+## 🚀 Các cải tiến mới trong phiên bản 0.6.10
 
-### 🔧 Sửa lỗi quan trọng (v0.6.8)
-- **Fix JPEG file extension handling**: Sửa lỗi file .JPEG (uppercase) không gửi được, giờ tất cả file extensions đều được chuẩn hóa thành lowercase (.JPEG → .jpeg)
-- **File type normalization**: Đảm bảo tất cả loại file (.PNG, .PDF, .DOCX, etc.) đều được xử lý đúng cách
+### 🔧 Sửa lỗi quan trọng (v0.6.10)
+- **Fix ZaloGroup limit issue**: Sửa lỗi limit parameters không hoạt động đúng cách
+  - `getAllGroups`: Giờ đã respect limit parameter, chỉ trả về đúng số lượng groups theo yêu cầu
+  - `getGroupMembers`: Áp dụng limit cho TẤT CẢ member arrays (members, admins, currentMems, updateMems)
+- **Enhanced response metadata**: Thêm thông tin `totalGroups`, `limitedToCount`, `actualReturnedCount` để theo dõi
+
+### 🔧 Các sửa lỗi từ v0.6.8-0.6.9
+- **Fix JPEG file extension handling**: Sửa lỗi file .JPEG (uppercase) không gửi được
+- **Fix PDF/file response errors**: Sửa lỗi "node execution output incorrect data" khi gửi PDF
+- **File type validation**: Thêm warnings cho file types không được Zalo hỗ trợ hoàn toàn
 
 ### ✨ Tính năng từ v0.6.6
-- **Gửi nhiều ảnh/file cùng lúc**: ZaloSendMessage hỗ trợ gửi nhiều URL ảnh/file trong một tin nhắn (comma-separated hoặc JSON array)
-- **Credential system được cải thiện**: Loại bỏ sự nhầm lẫn giữa các loại credential, interface rõ ràng hơn
-- **Simplified QR Login**: ZaloLoginByQr chỉ yêu cầu n8n API credentials, tự động tạo Zalo credentials sau khi QR login
-
-### 🔧 Các sửa lỗi từ v0.6.6
-- **Fix multiple URL handling**: Sửa lỗi khi gửi nhiều URL bị fail, giờ xử lý chính xác từng URL  
-- **Credential naming conflicts**: Giải quyết xung đột tên credential types
-- **Better error handling**: Logging và error messages rõ ràng hơn
+- **Gửi nhiều ảnh/file cùng lúc**: ZaloSendMessage hỗ trợ gửi nhiều URL ảnh/file trong một tin nhắn
+- **Credential system được cải thiện**: Interface rõ ràng hơn, tránh nhầm lẫn
+- **Simplified QR Login**: Chỉ cần n8n API credentials
 
 ## 💝 Ủng hộ tác giả
 
@@ -77,10 +79,14 @@ Node quản lý các hoạt động nhóm.
 - `addUserToGroup`: Thêm thành viên
 - `changeGroupAvatar`: Đổi avatar nhóm
 - `changeGroupName`: Đổi tên nhóm
-- `getGroupMembers`: Lấy danh sách thành viên
-- `getAllGroups`: Lấy tất cả nhóm
+- **🔧 `getGroupMembers`**: Lấy danh sách thành viên (hỗ trợ limit cho tất cả member types)
+- **🔧 `getAllGroups`**: Lấy tất cả nhóm (hỗ trợ limit số lượng groups trả về)
 - `removeUserFromGroup`: Xóa thành viên
 - `createNote`: Tạo ghi chú nhóm
+
+**Tính năng limit mới:**
+- Limit parameters giờ hoạt động chính xác 100%
+- Response bao gồm metadata: `totalGroups`, `limitedToCount`, `actualReturnedCount`
 
 ### 3. 👤 Zalo User
 Node quản lý người dùng và bạn bè.
