@@ -6,21 +6,21 @@ Node dành riêng cho n8n này được thiết kế hoạt động hoàn toàn 
 
 Node này mô phỏng trình duyệt để tương tác trực tiếp với Zalo Web, cho phép tự động hóa liền mạch ngay trong n8n. Đây là dự án mã nguồn mở, mở rộng cơ hội cho cộng đồng cùng đóng góp ý kiến và phát triển thêm các tính năng mới, nhằm xây dựng hệ thống tự động hóa Zalo tiên tiến, hiệu quả và an toàn hơn.
 
-## 🚀 Các cải tiến mới trong phiên bản 0.6.6
+## 🚀 Các cải tiến mới trong phiên bản 0.6.8
 
-### ✨ Tính năng mới
-- **Gửi nhiều ảnh/file cùng lúc**: ZaloSendMessage giờ hỗ trợ gửi nhiều URL ảnh/file trong một tin nhắn (comma-separated hoặc JSON array)
+### 🔧 Sửa lỗi quan trọng (v0.6.8)
+- **Fix JPEG file extension handling**: Sửa lỗi file .JPEG (uppercase) không gửi được, giờ tất cả file extensions đều được chuẩn hóa thành lowercase (.JPEG → .jpeg)
+- **File type normalization**: Đảm bảo tất cả loại file (.PNG, .PDF, .DOCX, etc.) đều được xử lý đúng cách
+
+### ✨ Tính năng từ v0.6.6
+- **Gửi nhiều ảnh/file cùng lúc**: ZaloSendMessage hỗ trợ gửi nhiều URL ảnh/file trong một tin nhắn (comma-separated hoặc JSON array)
 - **Credential system được cải thiện**: Loại bỏ sự nhầm lẫn giữa các loại credential, interface rõ ràng hơn
+- **Simplified QR Login**: ZaloLoginByQr chỉ yêu cầu n8n API credentials, tự động tạo Zalo credentials sau khi QR login
 
-### 🔧 Sửa lỗi
-- **Fix ZaloLoginByQr credential display**: Đơn giản hóa chỉ cần n8n API credentials, tự động tạo Zalo credentials sau khi QR login
-- **Fix multiple URL handling**: Sửa lỗi khi gửi nhiều URL bị fail, giờ xử lý chính xác từng URL
+### 🔧 Các sửa lỗi từ v0.6.6
+- **Fix multiple URL handling**: Sửa lỗi khi gửi nhiều URL bị fail, giờ xử lý chính xác từng URL  
 - **Credential naming conflicts**: Giải quyết xung đột tên credential types
-
-### 🎯 Cải thiện UX
-- **Simplified QR Login**: ZaloLoginByQr giờ chỉ yêu cầu n8n API credentials, không còn confusion
 - **Better error handling**: Logging và error messages rõ ràng hơn
-- **Cleaner credential interface**: Tách biệt rõ ràng giữa Zalo Login Credentials và n8n API Account
 
 ## 💝 Ủng hộ tác giả
 
@@ -104,7 +104,8 @@ Node gửi tin nhắn tới người dùng hoặc nhóm.
 - **🆕 Gửi nhiều ảnh/file cùng lúc**: 
   - Hỗ trợ comma-separated URLs: `url1,url2,url3`
   - Hỗ trợ JSON array: `["url1","url2","url3"]`
-- Gửi file từ URL
+- **🔧 File extension support**: Hỗ trợ tất cả file formats (.jpg, .JPEG, .png, .PNG, .pdf, etc.)
+- Gửi file từ URL với tự động chuẩn hóa extension
 - Quote tin nhắn
 - Mention người dùng
 - Proxy support
