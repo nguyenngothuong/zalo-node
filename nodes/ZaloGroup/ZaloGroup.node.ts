@@ -239,7 +239,7 @@ export class ZaloGroup implements INodeType {
 							title: content,
 							pinAct: pinAct,
 						};
-						const response = await api.createNote(options, groupId);
+						const response = await api.createNoteGroup(options, groupId);
 
 						returnData.push({
 							json: {

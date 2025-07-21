@@ -15,9 +15,23 @@ export async function saveFile(url: string): Promise<string | null> {
 			fs.mkdirSync(dataStoragePath, { recursive: true });
 		}
 
-		// Lấy phần mở rộng từ URL (nếu có), ví dụ: .png, .pdf
+		// Lấy phần mở rộng từ URL (nếu có), ví dụ: .png, .pdf, .JPEG
 		const urlPath = new URL(url).pathname;
-		const ext = path.extname(urlPath) || '.bin';
+		let ext = path.extname(urlPath);
+		
+		// Nếu không có extension, cố gắng đoán từ tên file trong URL
+		if (!ext || ext === '') {
+			const fileName = path.basename(urlPath);
+			const dotIndex = fileName.lastIndexOf('.');
+			if (dotIndex > 0) {
+				ext = fileName.substring(dotIndex);
+			} else {
+				ext = '.bin'; // fallback nếu không tìm được extension
+			}
+		}
+		
+		// Chuẩn hóa phần mở rộng: chuyển về lowercase để đảm bảo tương thích với .JPEG, .PNG, etc.
+		ext = ext.toLowerCase();
 
 		const timestamp = Date.now();
 		const filePath = path.join(dataStoragePath, `temp-${timestamp}${ext}`);
