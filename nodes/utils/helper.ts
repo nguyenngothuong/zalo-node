@@ -3,25 +3,25 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-// Optional Sharp import for image conversion
-let sharp: any;
+// HEIC conversion library
+let heicConvert: any;
 try {
-	sharp = require('sharp');
-	console.log('[HEIC] Sharp library loaded successfully');
+	heicConvert = require('heic-convert');
+	console.log('[HEIC] heic-convert library loaded successfully');
 } catch (error: any) {
-	console.error('[HEIC] Failed to load Sharp library:', error.message);
+	console.error('[HEIC] Failed to load heic-convert library:', error.message);
 	console.log('[HEIC] HEIC files will not be converted to JPEG');
-	sharp = null;
+	heicConvert = null;
 }
 
 /**
- * Convert HEIC/HEIF files to JPEG using Sharp
+ * Convert HEIC/HEIF files to JPEG using heic-convert
  */
 async function convertHeicToJpeg(inputPath: string): Promise<string | null> {
 	console.log(`[HEIC] Starting conversion for: ${inputPath}`);
 	
-	if (!sharp) {
-		console.error('[HEIC] Sharp library not available, cannot convert HEIC files');
+	if (!heicConvert) {
+		console.error('[HEIC] heic-convert library not available, cannot convert HEIC files');
 		return null;
 	}
 
@@ -37,9 +37,18 @@ async function convertHeicToJpeg(inputPath: string): Promise<string | null> {
 		
 		console.log(`[HEIC] Input file size: ${fs.statSync(inputPath).size} bytes`);
 		
-		await sharp(inputPath)
-			.jpeg({ quality: 90 })
-			.toFile(outputPath);
+		// Read HEIC file
+		const inputBuffer = fs.readFileSync(inputPath);
+		
+		// Convert HEIC to JPEG
+		const outputBuffer = await heicConvert({
+			buffer: inputBuffer,
+			format: 'JPEG',
+			quality: 0.9
+		});
+		
+		// Write JPEG file
+		fs.writeFileSync(outputPath, outputBuffer);
 		
 		// Check if output file was created
 		if (!fs.existsSync(outputPath)) {
