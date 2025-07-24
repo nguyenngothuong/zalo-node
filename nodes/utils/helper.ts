@@ -7,8 +7,10 @@ import path from 'path';
 let sharp: any;
 try {
 	sharp = require('sharp');
-} catch (error) {
-	// Sharp is optional, conversion will be skipped if not available
+	console.log('[HEIC] Sharp library loaded successfully');
+} catch (error: any) {
+	console.error('[HEIC] Failed to load Sharp library:', error.message);
+	console.log('[HEIC] HEIC files will not be converted to JPEG');
 	sharp = null;
 }
 
@@ -16,25 +18,46 @@ try {
  * Convert HEIC/HEIF files to JPEG using Sharp
  */
 async function convertHeicToJpeg(inputPath: string): Promise<string | null> {
+	console.log(`[HEIC] Starting conversion for: ${inputPath}`);
+	
 	if (!sharp) {
-		console.warn('Sharp library not available, cannot convert HEIC files');
+		console.error('[HEIC] Sharp library not available, cannot convert HEIC files');
 		return null;
 	}
 
 	try {
 		const outputPath = inputPath.replace(/\.(heic|heif)$/i, '.jpg');
+		console.log(`[HEIC] Converting to: ${outputPath}`);
+		
+		// Check if input file exists
+		if (!fs.existsSync(inputPath)) {
+			console.error(`[HEIC] Input file does not exist: ${inputPath}`);
+			return null;
+		}
+		
+		console.log(`[HEIC] Input file size: ${fs.statSync(inputPath).size} bytes`);
 		
 		await sharp(inputPath)
 			.jpeg({ quality: 90 })
 			.toFile(outputPath);
 		
+		// Check if output file was created
+		if (!fs.existsSync(outputPath)) {
+			console.error(`[HEIC] Output file was not created: ${outputPath}`);
+			return null;
+		}
+		
+		console.log(`[HEIC] Output file size: ${fs.statSync(outputPath).size} bytes`);
+		
 		// Remove original HEIC file
 		fs.unlinkSync(inputPath);
+		console.log(`[HEIC] Removed original file: ${inputPath}`);
 		
-		console.log(`Converted HEIC to JPEG: ${outputPath}`);
+		console.log(`[HEIC] Successfully converted HEIC to JPEG: ${outputPath}`);
 		return outputPath;
 	} catch (error) {
-		console.error('Error converting HEIC to JPEG:', error);
+		console.error('[HEIC] Error converting HEIC to JPEG:', error);
+		console.error('[HEIC] Error details:', JSON.stringify(error, null, 2));
 		return null;
 	}
 }
@@ -77,11 +100,13 @@ export async function saveFile(url: string): Promise<string | null> {
 
 		// Convert HEIC/HEIF files to JPEG if Sharp is available
 		if (ext === '.heic' || ext === '.heif') {
+			console.log(`[HEIC] Detected HEIC/HEIF file: ${filePath}`);
 			const convertedPath = await convertHeicToJpeg(filePath);
 			if (convertedPath) {
 				filePath = convertedPath;
+				console.log(`[HEIC] Using converted file: ${filePath}`);
 			} else {
-				console.warn(`Could not convert HEIC file: ${filePath}`);
+				console.error(`[HEIC] Failed to convert HEIC file, using original: ${filePath}`);
 			}
 		}
 

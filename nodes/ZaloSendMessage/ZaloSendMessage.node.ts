@@ -298,22 +298,28 @@ export class ZaloSendMessage implements INodeType {
 							for (const url of urls) {
 								if (url) {
 									this.logger.info(`Processing URL: ${url}`);
+									console.log(`[ZaloSendMessage] Processing URL: ${url}`);
 									const fileData = await saveFile(url);
 									if (fileData) {
 										// Check if file type is supported by Zalo
 										const ext = path.extname(fileData).toLowerCase();
 										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 										
+										console.log(`[ZaloSendMessage] Downloaded file: ${fileData}, extension: ${ext}`);
+										
 										if (supportedImageExts.includes(ext)) {
 											messageContent.attachments.push(fileData);
 											this.logger.info(`Successfully downloaded image: ${fileData}`);
+											console.log(`[ZaloSendMessage] Added supported image to attachments: ${fileData}`);
 										} else {
 											this.logger.warn(`File type ${ext} may not be supported by Zalo: ${fileData}`);
+											console.log(`[ZaloSendMessage] Warning: Unsupported file type ${ext}, but will try to send: ${fileData}`);
 											// Still try to send, but warn user
 											messageContent.attachments.push(fileData);
 										}
 									} else {
 										this.logger.error(`Failed to download file from URL: ${url}`);
+										console.error(`[ZaloSendMessage] Failed to download file from URL: ${url}`);
 									}
 								}
 							}
@@ -336,22 +342,28 @@ export class ZaloSendMessage implements INodeType {
 							for (const url of urls) {
 								if (url) {
 									this.logger.info(`Processing URL: ${url}`);
+									console.log(`[ZaloSendMessage] Processing URL: ${url}`);
 									const fileData = await saveFile(url);
 									if (fileData) {
 										// Check if file type is supported by Zalo
 										const ext = path.extname(fileData).toLowerCase();
 										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 										
+										console.log(`[ZaloSendMessage] Downloaded file: ${fileData}, extension: ${ext}`);
+										
 										if (supportedImageExts.includes(ext)) {
 											messageContent.attachments.push(fileData);
 											this.logger.info(`Successfully downloaded image: ${fileData}`);
+											console.log(`[ZaloSendMessage] Added supported image to attachments: ${fileData}`);
 										} else {
 											this.logger.warn(`File type ${ext} may not be supported by Zalo: ${fileData}`);
+											console.log(`[ZaloSendMessage] Warning: Unsupported file type ${ext}, but will try to send: ${fileData}`);
 											// Still try to send, but warn user
 											messageContent.attachments.push(fileData);
 										}
 									} else {
 										this.logger.error(`Failed to download file from URL: ${url}`);
+										console.error(`[ZaloSendMessage] Failed to download file from URL: ${url}`);
 									}
 								}
 							}
