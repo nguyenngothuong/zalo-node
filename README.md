@@ -6,7 +6,14 @@ Node dành riêng cho n8n này được thiết kế hoạt động hoàn toàn 
 
 Node này mô phỏng trình duyệt để tương tác trực tiếp với Zalo Web, cho phép tự động hóa liền mạch ngay trong n8n. Đây là dự án mã nguồn mở, mở rộng cơ hội cho cộng đồng cùng đóng góp ý kiến và phát triển thêm các tính năng mới, nhằm xây dựng hệ thống tự động hóa Zalo tiên tiến, hiệu quả và an toàn hơn.
 
-## 🚀 Các cải tiến mới trong phiên bản 0.6.10
+## 🚀 Các cải tiến mới trong phiên bản 0.6.15
+
+### 🎉 Tính năng mới (v0.6.15)
+- **HEIC to JPEG conversion**: Tự động convert file HEIC/HEIF sang JPEG trước khi gửi
+  - Sử dụng thư viện `heic-convert` (pure JavaScript, hoạt động tốt trong Docker)
+  - Chất lượng JPEG output: 90%
+  - Tự động xóa file HEIC gốc sau khi convert
+  - Enhanced logging với prefix `[HEIC]` để dễ debug
 
 ### 🔧 Sửa lỗi quan trọng (v0.6.10)
 - **Fix ZaloGroup limit issue**: Sửa lỗi limit parameters không hoạt động đúng cách
@@ -111,6 +118,7 @@ Node gửi tin nhắn tới người dùng hoặc nhóm.
   - Hỗ trợ comma-separated URLs: `url1,url2,url3`
   - Hỗ trợ JSON array: `["url1","url2","url3"]`
 - **🔧 File extension support**: Hỗ trợ tất cả file formats (.jpg, .JPEG, .png, .PNG, .pdf, etc.)
+- **🎉 HEIC/HEIF support**: Tự động convert HEIC/HEIF sang JPEG (v0.6.15+)
 - Gửi file từ URL với tự động chuẩn hóa extension
 - Quote tin nhắn
 - Mention người dùng
