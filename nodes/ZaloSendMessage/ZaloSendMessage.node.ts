@@ -302,7 +302,7 @@ export class ZaloSendMessage implements INodeType {
 									if (fileData) {
 										// Check if file type is supported by Zalo
 										const ext = path.extname(fileData).toLowerCase();
-										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.heic'];
+										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 										
 										if (supportedImageExts.includes(ext)) {
 											messageContent.attachments.push(fileData);
@@ -340,7 +340,7 @@ export class ZaloSendMessage implements INodeType {
 									if (fileData) {
 										// Check if file type is supported by Zalo
 										const ext = path.extname(fileData).toLowerCase();
-										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.heic'];
+										const supportedImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 										
 										if (supportedImageExts.includes(ext)) {
 											messageContent.attachments.push(fileData);

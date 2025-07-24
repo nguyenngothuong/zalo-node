@@ -4,9 +4,13 @@
 
 ### 1. Đăng nhập NPM
 ```bash
+npm login --auth-type=web
+```
+Hoặc dùng lệnh cũ:
+```bash
 npm login
 ```
-Nhập username, password và email của NPM account.
+Nhập username, password, email và OTP (One Time Password) từ authenticator app.
 
 ### 2. Kiểm tra thông tin package
 ```bash
@@ -43,9 +47,14 @@ npm version major
 # Publish bình thường
 npm publish
 
+# Publish với OTP (nếu bật 2FA)
+npm publish --otp=123456
+
 # Publish với tag (nếu là beta/alpha)
-npm publish --tag beta
+npm publish --tag beta --otp=123456
 ```
+
+**Lưu ý:** Thay `123456` bằng mã OTP 6 số từ authenticator app của bạn.
 
 ## Kiểm tra sau khi publish
 
@@ -70,15 +79,32 @@ npm view n8n-nodes-zalo-nnt version
 - Kiểm tra có quyền publish package này không
 
 ### Lỗi 2FA
-- Nếu bật 2FA, nhập OTP khi được yêu cầu
+- Nếu bật 2FA, dùng flag `--otp=XXXXXX` với mã từ authenticator app
+- Hoặc npm sẽ prompt yêu cầu nhập OTP
+- Mã OTP có hiệu lực trong 30 giây
 
 ## Quick Commands
 ```bash
 # Full publish flow
 pnpm build
 npm version patch
-npm publish
+npm publish --otp=123456
 
 # Check published package
 npm view n8n-nodes-zalo-nnt
+
+# One-liner publish với OTP
+npm publish --otp=$(read -p "Enter OTP: " otp; echo $otp)
+```
+
+## Lệnh publish với OTP
+```bash
+# Cách 1: Truyền OTP trực tiếp
+npm publish --otp=123456
+
+# Cách 2: Npm sẽ hỏi OTP
+npm publish
+
+# Cách 3: Interactive OTP input
+npm publish --otp=$(read -s -p "Enter OTP: " otp; echo $otp)
 ```

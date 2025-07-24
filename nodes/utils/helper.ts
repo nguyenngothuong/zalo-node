@@ -3,6 +3,42 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+// Optional Sharp import for image conversion
+let sharp: any;
+try {
+	sharp = require('sharp');
+} catch (error) {
+	// Sharp is optional, conversion will be skipped if not available
+	sharp = null;
+}
+
+/**
+ * Convert HEIC/HEIF files to JPEG using Sharp
+ */
+async function convertHeicToJpeg(inputPath: string): Promise<string | null> {
+	if (!sharp) {
+		console.warn('Sharp library not available, cannot convert HEIC files');
+		return null;
+	}
+
+	try {
+		const outputPath = inputPath.replace(/\.(heic|heif)$/i, '.jpg');
+		
+		await sharp(inputPath)
+			.jpeg({ quality: 90 })
+			.toFile(outputPath);
+		
+		// Remove original HEIC file
+		fs.unlinkSync(inputPath);
+		
+		console.log(`Converted HEIC to JPEG: ${outputPath}`);
+		return outputPath;
+	} catch (error) {
+		console.error('Error converting HEIC to JPEG:', error);
+		return null;
+	}
+}
+
 /**
  * Tải file bất kỳ (ảnh, pdf, zip...) và lưu vào thư mục tạm trong n8n
  */
@@ -34,10 +70,20 @@ export async function saveFile(url: string): Promise<string | null> {
 		ext = ext.toLowerCase();
 
 		const timestamp = Date.now();
-		const filePath = path.join(dataStoragePath, `temp-${timestamp}${ext}`);
+		let filePath = path.join(dataStoragePath, `temp-${timestamp}${ext}`);
 
 		const { data } = await axios.get(url, { responseType: 'arraybuffer' });
 		fs.writeFileSync(filePath, data); // đúng kiểu nhị phân
+
+		// Convert HEIC/HEIF files to JPEG if Sharp is available
+		if (ext === '.heic' || ext === '.heif') {
+			const convertedPath = await convertHeicToJpeg(filePath);
+			if (convertedPath) {
+				filePath = convertedPath;
+			} else {
+				console.warn(`Could not convert HEIC file: ${filePath}`);
+			}
+		}
 
 		return filePath;
 	} catch (error) {
