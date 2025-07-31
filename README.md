@@ -153,7 +153,7 @@ We would like to thank **ZCA-JS** for their excellent work on the core library t
 
 ## 📄 License
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+[MIT](https://github.com/nguyenngothuong/zalo-node/blob/main/LICENSE.md)
 
 ---
 
