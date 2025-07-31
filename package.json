@@ -1,10 +1,22 @@
 {
 	"name": "n8n-nodes-zalo-nnt",
 	"version": "0.6.16",
-	"description": "Các node hỗ trợ Zalo cho n8n",
+	"description": "Unofficial Zalo integration for n8n - Send messages, manage groups, user operations with QR login. No API key required, works via browser simulation.",
 	"keywords": [
 		"n8n-community-node-package",
-		"nnt"
+		"zalo",
+		"zalo-integration",
+		"n8n-nodes",
+		"zalo-api",
+		"messaging",
+		"automation",
+		"workflow",
+		"zalo-web",
+		"qr-login",
+		"vietnamese",
+		"chat-bot",
+		"social-media",
+		"communication"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/nguyenngothuong/zalo-node",
