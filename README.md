@@ -1,5 +1,11 @@
 ![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
 
+## 📺 Video hướng dẫn cài đặt & đăng nhập Zalo trên n8n
+
+[![Xem video hướng dẫn](https://img.youtube.com/vi/iwziXxQoW_Q/0.jpg)](https://www.youtube.com/watch?v=iwziXxQoW_Q)
+
+> Video chi tiết cách cài đặt node, cấu hình và đăng nhập Zalo bằng QR code trên n8n.
+
 # n8n-nodes-zalo-nnt
 
 Node dành riêng cho n8n này được thiết kế hoạt động hoàn toàn bên trong instance n8n của bạn. Không cần sử dụng API của bên thứ ba hay phụ thuộc ngoại vi nào — chỉ có sự tự động hóa quy trình thuần túy, đảm bảo dữ liệu của bạn luôn được giữ riêng tư và an toàn.
