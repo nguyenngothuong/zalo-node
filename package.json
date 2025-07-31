@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-zalo-nnt",
-	"version": "0.6.16",
+	"version": "0.6.17",
 	"description": "Unofficial Zalo integration for n8n - Send messages, manage groups, user operations with QR login. No API key required, works via browser simulation.",
 	"keywords": [
 		"n8n-community-node-package",
